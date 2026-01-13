@@ -1,0 +1,3291 @@
+<!doctype html>
+<!--
+  ============================================================================
+  文件名: awa_company01.html
+  描述: 佛山信诚通机电有限公司官网 - 工业传动产品外贸代理商展示网站
+  功能: 
+    - 多语言支持（中文/英文）
+    - 深色/浅色主题切换
+    - 响应式设计（支持移动端和桌面端）
+    - 产品详情页展示
+    - 产品分类导航
+  ============================================================================
+-->
+<html lang="zh-CN">
+  <head>
+    <!-- 基础元信息 -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="专业的工业传动产品外贸代理商，官方授权代理麦高迪和东力减速机，提供高品质工业传动配件和解决方案。" />
+    <meta name="keywords" content="外贸代理,麦高迪,东力减速机,工业传动,传动配件,国际贸易" />
+    <title>工业传动系统专家 - 专业外贸代理商</title>
+    
+    <!-- 外部资源 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind CSS 配置 -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',  // 使用类名切换深色模式
+        theme: {
+          extend: {
+            colors: {
+              // 自定义蓝色主题色板
+              blue: {
+                50: '#eff6ff',
+                100: '#dbeafe',
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563eb',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
+              },
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],  // 默认字体
+            },
+          },
+        }
+      }
+    </script>
+    <!-- Tailwind 工具类扩展 -->
+    <style type="text/tailwindcss">
+      @layer utilities {
+        /* 内容可见性优化 - 提升长页面性能 */
+        .content-auto {
+          content-visibility: auto;
+        }
+        
+        /* 滚动显示动画 - 元素进入视口时显示 */
+        .scroll-reveal {
+          opacity: 0;
+          transition: all 0.8s ease;
+        }
+        .scroll-reveal.revealed {
+          opacity: 1;
+        }
+        
+        /* 从左进入动画 */
+        .scroll-reveal.left {
+          transform: translateX(-30px);
+        }
+        
+        /* 从右进入动画 */
+        .scroll-reveal.right {
+          transform: translateX(30px);
+        }
+        
+        /* 从下进入动画 */
+        .scroll-reveal.up {
+          transform: translateY(30px);
+        }
+        
+        /* 动画完成后重置位置 */
+        .scroll-reveal.revealed.left,
+        .scroll-reveal.revealed.right,
+        .scroll-reveal.revealed.up {
+          transform: translateX(0);
+        }
+
+        /* ==================== 全屏滚动样式 ==================== */
+        .fullpage-section {
+          min-height: 100vh;
+          scroll-snap-align: start;
+          position: relative;
+          padding-top: 80px; /* 为导航栏留出空间 */
+          box-sizing: border-box;
+          display: flex;
+          align-items: center; /* 默认垂直居中 */
+        }
+
+        .carousel {
+          position: relative;
+          width: 100%;
+          height: 100vh; /* 改为100vh而不是100% */
+          overflow: hidden;
+          margin: 0 !important;
+          padding: 0 !important;
+          left: 0;
+          top: 0;
+          border-radius: 20px;
+          z-index: 1; /* 确保轮播图在正确层级 */
+        }
+
+        /* 确保轮播图在移动端也正常 */
+        @media (max-width: 768px) {
+          .carousel {
+            height: 100vh;
+          }
+          
+          .carousel-content {
+            max-width: 90% !important; /* 增加移动端内容区域宽度 */
+          }
+        }
+
+        /* 内容多的区域调整为顶部对齐 */
+        .fullpage-section.content-rich {
+          align-items: flex-start;
+          padding-top: 100px;
+        }
+
+        /* 内容少的区域保持居中 */
+        .fullpage-section.content-sparse {
+          align-items: center;
+        }
+
+        /* 调整导航栏z-index确保在最上层 */
+        #navbar {
+          z-index: 1000;
+        }
+
+        /* 调整英雄区域（第一个section）的高度，确保不会被导航栏挡住 */
+        #hero {
+          padding-top: 0 !important;
+          display: block !important; /* 覆盖flex布局 */
+          min-height: 100vh;
+          overflow: visible !important; /* 确保轮播图不被裁剪 */
+        }
+
+        /* 为body添加平滑滚动 */
+        html {
+        scroll-behavior: smooth;
+        scroll-snap-type: y mandatory;
+        overflow-y: scroll;
+        }
+
+        /* 隐藏默认滚动条 */
+        ::-webkit-scrollbar {
+        width: 0;
+        background: transparent;
+        }
+
+        /* 添加导航指示器 */
+        .section-indicator {
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        }
+
+        .section-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(59, 130, 246, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        }
+
+        .section-dot.active {
+        background-color: #3b82f6;
+        transform: scale(1.2);
+        }
+
+        .section-dot:hover {
+        background-color: #3b82f6;
+        }
+      }
+    </style>
+    
+    <!-- 自定义样式 -->
+    <style>
+      /* ==================== 全局样式 ==================== */
+      :root {
+        scroll-behavior: smooth;  /* 平滑滚动 */
+      }
+      
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      
+      html {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      
+      /* ==================== 动画定义 ==================== */
+      /* 淡入动画 */
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      /* 向上滑入动画 */
+      @keyframes slideUp {
+        from { 
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to { 
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      /* 动画工具类 */
+      .animate-fade-in {
+        animation: fadeIn 0.8s ease forwards;
+      }
+      
+      .animate-slide-up {
+        animation: slideUp 0.8s ease forwards;
+      }
+      
+      /* 动画延迟工具类 */
+      .animate-delay-100 { animation-delay: 0.1s; }
+      .animate-delay-200 { animation-delay: 0.2s; }
+      .animate-delay-300 { animation-delay: 0.3s; }
+      .animate-delay-400 { animation-delay: 0.4s; }
+      .animate-delay-500 { animation-delay: 0.5s; }
+      
+      /* ==================== 语言切换样式 ==================== */
+      /* 语言切换容器 */
+      .language-switcher {
+        position: relative;
+        margin-right: 8px;
+      }
+      
+      /* 显示当前语言的内容 */
+      #language-zh:checked ~ * .lang-zh,
+      #language-en:checked ~ * .lang-en {
+        display: block !important;
+      }
+      
+      /* 隐藏非当前语言的内容 */
+      #language-zh:checked ~ * .lang-en,
+      #language-en:checked ~ * .lang-zh {
+        display: none !important;
+      }
+      
+      /* 语言按钮基础样式 */
+      .lang-btn {
+        padding: 6px 12px;
+        margin: 0 2px;
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.2s ease;
+      }
+      
+      .lang-btn:hover {
+        background: #e0e0e0;
+      }
+      
+      /* 当前选中语言按钮的样式 */
+      #language-zh:checked ~ .language-switcher .lang-label[for="language-zh"],
+      #language-en:checked ~ .language-switcher .lang-label[for="language-en"] {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+      }
+      
+      /* 语言标签样式 */
+      .lang-label {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.2s ease;
+      }
+      
+      /* ==================== 产品详情页样式 ==================== */
+      /* 产品图片容器 */
+      .product-image-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 4 / 3;  /* 保持4:3宽高比 */
+        max-width: 600px;
+        overflow: hidden;
+      }
+      
+      #product-image {
+        max-height: 500px;
+        min-height: 300px;
+      }
+      
+      /* ==================== 响应式设计 ==================== */
+      @media (max-width: 768px) {
+        .product-image-container {
+          max-width: 100%;
+        }
+        
+        #product-image {
+          max-height: 400px;
+          min-height: 250px;
+        }
+      }
+      /* ==================== 轮播图样式 ==================== */
+      .carousel {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0 !important;  /* 清除可能的外边距 */
+        padding: 0 !important; /* 清除可能的内边距 */
+        left: 0;
+        top: 0;
+        border-radius: 20px;
+      }
+      
+      .carousel-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin-top: 0 !important;
+        border-radius: 20px;
+      }
+      
+      .carousel-slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        padding-left: 2%;
+        padding-top: 120px;
+        border-radius: 20px;
+      }
+      
+      .carousel-slide.active {
+        opacity: 1;
+        z-index: 1;
+      }
+      
+      .carousel-slide img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.8;
+        z-index: 0;
+        border-radius: 20px;
+      }
+      
+      .carousel-content {
+        position: relative;
+        z-index: 2;
+        color: #1a3e8d;
+        max-width: 50%;
+      }
+      
+      .carousel-content h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+      
+      .carousel-content p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .carousel-content button {
+        padding: 0.75rem 1.5rem;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+      }
+      
+      .carousel-content button:hover {
+        background-color: #2563eb;
+      }
+      
+      .carousel-dots {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 3;
+      }
+      
+      .carousel-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+      
+      .carousel-dot.active {
+        background-color: white;
+      }
+      
+      .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 70px;
+        height: 70px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease;
+        z-index: 3;
+      }
+      
+      .carousel-control:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+      
+      .carousel-control.prev {
+        left: 20px;
+      }
+      
+      .carousel-control.next {
+        right: 20px;
+      }
+      
+      @media (max-width: 768px) {
+        .carousel {
+          height: 100vh;
+        }
+        
+        .carousel-content {
+          max-width: 70%;
+        }
+        
+        .carousel-content h2 {
+          font-size: 1.5rem;
+        }
+        
+        .carousel-content p {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-sans antialiased text-gray-800 bg-gray-50 dark:text-white dark:bg-gray-900 transition-colors duration-300">
+    <!-- ==================== 语言切换控制 ==================== -->
+    <!-- 使用隐藏的单选框实现语言切换功能 -->
+    <input type="radio" name="language" id="language-zh" hidden checked>
+    <input type="radio" name="language" id="language-en" hidden>
+    
+    <!-- ==================== 首页内容容器 ==================== -->
+    <div id="app">
+    <!-- ==================== 导航栏区域 ==================== -->
+    <!-- 
+      功能: 
+      - 固定顶部导航栏
+      - 多语言切换
+      - 主题切换（深色/浅色）
+      - 响应式移动端菜单
+    -->
+<nav 
+  id="navbar" 
+  class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md transition-all duration-300 py-4 shadow-md border-b-2 border-blue-500"
+>
+  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+    <div class="flex items-center space-x-3">
+      <img 
+        src="https://i.postimg.cc/GpCqxcD1/33.png" 
+        alt="FOSHAN AWA INDUSTRIAL Logo" 
+        class="h-10 w-auto object-contain"
+      >
+      <h1 class="text-xl font-bold text-blue-600 lang-zh">FOSHAN AWA INDUSTRIAL</h1>
+      <h1 class="text-xl font-bold text-blue-600 lang-en" style="display: none;">FOSHAN AWA INDUSTRIAL</h1>
+    </div>
+    
+    <div class="hidden md:flex space-x-8">
+      <button onclick="scrollToSection('hero')" class="hover:text-blue-600 transition-colors">
+        <span class="lang-zh">首页</span>
+        <span class="lang-en" style="display: none;">Home</span>
+      </button>
+      <button onclick="scrollToSection('about')" class="hover:text-blue-600 transition-colors">
+        <span class="lang-zh">关于我们</span>
+        <span class="lang-en" style="display: none;">About Us</span>
+      </button>
+      <button onclick="scrollToSection('brands')" class="hover:text-blue-600 transition-colors">
+        <span class="lang-zh">代理品牌</span>
+        <span class="lang-en" style="display: none;">Brands</span>
+      </button>
+      <button onclick="scrollToSection('products')" class="hover:text-blue-600 transition-colors">
+        <span class="lang-zh">产品分类</span>
+        <span class="lang-en" style="display: none;">Products</span>
+      </button>
+      <button onclick="scrollToSection('advantages')" class="hover:text-blue-600 transition-colors">
+        <span class="lang-zh">公司优势</span>
+        <span class="lang-en" style="display: none;">Advantages</span>
+      </button>
+      <button onclick="scrollToSection('contact')" class="hover:text-blue-600 transition-colors">
+        <span class="lang-zh">联系方式</span>
+        <span class="lang-en" style="display: none;">Contact</span>
+      </button>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <!-- === 语言切换按钮（新增部分）=== -->
+      <div class="language-switcher">
+        <label for="language-zh" class="lang-label">中</label>
+        <label for="language-en" class="lang-label">EN</label>
+      </div>
+      
+      <button 
+  id="themeToggle" 
+  onclick="toggleTheme()"
+  class="p-2 rounded-full bg-blue-100 hover:bg-blue-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-blue-600 dark:text-yellow-400 transition-colors shadow-sm"
+  aria-label="切换主题"
+>
+  <i class="fa fa-moon dark:hidden text-lg"></i>
+  <i class="fa fa-sun-o hidden dark:block text-lg"></i>
+</button>
+      
+      <button 
+        id="mobileMenuBtn" 
+        class="md:hidden p-2"
+        onclick="toggleMobileMenu()"
+      >
+        <i class="fa fa-bars text-xl"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- 移动端菜单 -->
+  <div id="mobileMenu" class="md:hidden bg-white dark:bg-gray-800 shadow-lg absolute w-full hidden">
+    <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+      <button onclick="scrollToSection('hero')" class="py-2 hover:text-blue-600 transition-colors text-left">
+        <span class="lang-zh">首页</span>
+        <span class="lang-en" style="display: none;">Home</span>
+      </button>
+      <button onclick="scrollToSection('about')" class="py-2 hover:text-blue-600 transition-colors text-left">
+        <span class="lang-zh">关于我们</span>
+        <span class="lang-en" style="display: none;">About Us</span>
+      </button>
+      <button onclick="scrollToSection('brands')" class="py-2 hover:text-blue-600 transition-colors text-left">
+        <span class="lang-zh">代理品牌</span>
+        <span class="lang-en" style="display: none;">Brands</span>
+      </button>
+      <button onclick="scrollToSection('products')" class="py-2 hover:text-blue-600 transition-colors text-left">
+        <span class="lang-zh">产品分类</span>
+        <span class="lang-en" style="display: none;">Products</span>
+      </button>
+      <button onclick="scrollToSection('advantages')" class="py-2 hover:text-blue-600 transition-colors text-left">
+        <span class="lang-zh">公司优势</span>
+        <span class="lang-en" style="display: none;">Advantages</span>
+      </button>
+      <button onclick="scrollToSection('contact')" class="py-2 hover:text-blue-600 transition-colors text-left">
+        <span class="lang-zh">联系方式</span>
+        <span class="lang-en" style="display: none;">Contact</span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ==================== 英雄区域（首页顶部横幅）==================== -->
+<!-- 展示公司主要信息和行动按钮 -->
+<section id="hero" class="fullpage-section relative overflow-hidden bg-gradient-to-r from-blue-50 to-indigo-50 dark:bg-gradient-to-r dark:from-gray-800 dark:to-gray-900">
+  <!-- 背景装饰元素 -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-blue-400 dark:bg-blue-800"></div>
+    <div class="absolute top-20 right-20 w-60 h-60 rounded-full bg-indigo-400 dark:bg-indigo-800"></div>
+    <div class="absolute bottom-10 left-1/3 w-40 h-40 rounded-full bg-purple-400 dark:bg-purple-800"></div>
+  </div>
+  
+  <!-- 内容容器 - 使用flex布局使内容垂直居中 -->
+  <div class="container mx-auto h-full flex items-center px-4 relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full items-center">
+      <!-- 左半部：文字内容 -->
+      <div class="animate-fade-in">
+        <div class="max-w-2xl">
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <span class="lang-zh text-blue-600 dark:text-blue-400">专业</span>
+            <span class="lang-en text-blue-600 dark:text-blue-400" style="display: none;">Professional</span>
+            <span class="lang-zh">外贸代理服务</span>
+            <span class="lang-en" style="display: none;">Export Agency Services</span>
+          </h1>
+          <p class="text-xl md:text-2xl mb-10 opacity-90">
+            <span class="lang-zh">官方授权代理麦高迪和东力减速机，提供高品质工业传动配件</span>
+            <span class="lang-en" style="display: none;">Authorized distributor of Megadyne and Dongli gear reducers, providing high-quality industrial transmission parts</span>
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <button 
+              onclick="scrollToSection('products')"
+              class="px-8 py-3 bg-blue-600 text-white rounded-full font-medium hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-300 dark:bg-blue-700 dark:hover:bg-blue-600"
+            >
+              <span class="lang-zh">浏览产品</span>
+              <span class="lang-en" style="display: none;">Browse Products</span>
+            </button>
+            <button 
+              onclick="scrollToSection('contact')"
+              class="px-8 py-3 rounded-full font-medium transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-300 bg-white text-blue-600 hover:bg-gray-100 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+            >
+              <span class="lang-zh">联系我们</span>
+              <span class="lang-en" style="display: none;">Contact Us</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右半部：轮播图 -->
+      <div class="relative h-full min-h-[500px] lg:min-h-[600px]">
+        <!-- ==================== 轮播图区域 ==================== -->
+        <div class="carousel">
+          <div class="carousel-container">
+            <!-- 第一张轮播图 -->
+            <div class="carousel-slide active">
+              <img src="https://i.postimg.cc/RqgPQ7LF/head01.jpg" alt="轮播图1">
+              <div class="carousel-content">
+                <h2 class="lang-zh">麦高迪品牌代理</h2>
+                <h2 class="lang-en" style="display: none;">Megadyne Brand Distribution</h2>
+                <p class="lang-zh">官方授权代理，提供全系列的高品质传动带</p>
+                <p class="lang-en" style="display: none;">Authorized distributor with complete range of high-quality transmission belts</p>
+                <button onclick="scrollToSection('brands')" class="lang-zh">查看品牌</button>
+                <button onclick="scrollToSection('brands')" class="lang-en" style="display: none;">View Brands</button>
+              </div>
+            </div>
+            
+            <!-- 第二张轮播图 -->
+            <div class="carousel-slide">
+              <img src="https://i.postimg.cc/nM3dY4Gc/head02.jpg" alt="轮播图2">
+              <div class="carousel-content">
+                <h2 class="lang-zh">东力减速机代理</h2>
+                <h2 class="lang-en" style="display: none;">Dongli Gear Reducer Distribution</h2>
+                <p class="lang-zh">高效能减速机产品，满足各行业应用需求</p>
+                <p class="lang-en" style="display: none;">High-performance gear reducers meeting various industry application needs</p>
+                <button onclick="scrollToSection('brands')" class="lang-zh">查看品牌</button>
+                <button onclick="scrollToSection('brands')" class="lang-en" style="display: none;">View Brands</button>
+              </div>
+            </div>
+            
+            <!-- 第三张轮播图 -->
+            <div class="carousel-slide">
+              <img src="https://i.postimg.cc/JGtpTspg/head03.jpg" alt="轮播图3">
+              <div class="carousel-content">
+                <h2 class="lang-zh">工业传动解决方案</h2>
+                <h2 class="lang-en" style="display: none;">Industrial Transmission Solutions</h2>
+                <p class="lang-zh">提供高品质工业传动配件和完整的解决方案</p>
+                <p class="lang-en" style="display: none;">Providing high-quality industrial transmission parts and complete solutions</p>
+                <button onclick="scrollToSection('products')" class="lang-zh">了解更多</button>
+                <button onclick="scrollToSection('products')" class="lang-en" style="display: none;">Learn More</button>
+              </div>
+            </div>
+            
+            <!-- 第四张轮播图 -->
+            <div class="carousel-slide">
+              <img src="https://i.postimg.cc/3WtLCXFC/head04.jpg" alt="轮播图4">
+              <div class="carousel-content">
+                <h2 class="lang-zh">专业的外贸代理服务</h2>
+                <h2 class="lang-en" style="display: none;">Professional Export Agency Service</h2>
+                <p class="lang-zh">为您提供高品质的传动产品和优质的服务</p>
+                <p class="lang-en" style="display: none;">Providing high-quality transmission products and excellent service</p>
+                <button onclick="scrollToSection('contact')" class="lang-zh">联系我们</button>
+                <button onclick="scrollToSection('contact')" class="lang-en" style="display: none;">Contact Us</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 轮播图指示点 -->
+          <div class="carousel-dots">
+            <span class="carousel-dot active" onclick="currentSlide(0)"></span>
+            <span class="carousel-dot" onclick="currentSlide(1)"></span>
+            <span class="carousel-dot" onclick="currentSlide(2)"></span>
+            <span class="carousel-dot" onclick="currentSlide(3)"></span>
+          </div>
+          
+          <!-- 轮播图控制按钮 -->
+          <button class="carousel-control prev" onclick="prevSlide()">
+            <i class="fa fa-chevron-left"></i>
+          </button>
+          <button class="carousel-control next" onclick="nextSlide()">
+            <i class="fa fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+      <!-- ==================== 公司简介区域 ==================== -->
+      <!-- 介绍公司背景、资质、团队等信息 -->
+      <section id="about" class="fullpage-section content-rich py-20 bg-gray-50 dark:bg-gray-800">
+        <div class="container mx-auto px-4">
+          <div class="text-center mb-12 scroll-reveal">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">
+              <span class="lang-zh">关于我们</span>
+              <span class="lang-en" style="display: none;">About Us</span>
+            </h2>
+            <p class="text-lg max-w-2xl mx-auto">
+              <span class="lang-zh">专业的工业传动产品外贸代理商，致力于为全球客户提供高品质的传动解决方案</span>
+              <span class="lang-en" style="display: none;">Professional export agent for industrial transmission products, committed to providing high-quality transmission solutions for global customers</span>
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div class="order-2 md:order-1 scroll-reveal left">
+              <h3 class="text-2xl font-bold mb-4">
+                <span class="lang-zh">专业代理资质</span>
+                <span class="lang-en" style="display: none;">Professional Agency Qualifications</span>
+              </h3>
+              <p class="mb-4">
+                <span class="lang-zh">我们是麦高迪(Megadyne)和东力减速机的官方授权代理商，拥有多年的工业传动产品外贸经验。公司专注于为全球客户提供高品质的传动带、减速机及相关配件，以专业的服务和可靠的产品质量赢得了客户的广泛认可。</span>
+                <span class="lang-en" style="display: none;">We are the authorized distributor of Megadyne and Dongli gear reducers, with years of experience in exporting industrial transmission products. The company specializes in providing high-quality transmission belts, gear reducers, and related accessories to global customers, earning widespread recognition for professional services and reliable product quality.</span>
+              </p>
+              <p class="mb-4">
+                <span class="lang-zh">凭借对行业的深刻理解和丰富的市场经验，我们能够为不同国家和地区的客户提供量身定制的解决方案，满足各种特殊需求。</span>
+                <span class="lang-en" style="display: none;">With deep industry understanding and rich market experience, we can provide customized solutions for customers in different countries and regions, meeting various special needs.</span>
+              </p>              
+              <!-- 专业团队的按钮属性 -->
+              <button 
+                onclick="showTeamPage()"
+                class="flex items-center space-x-4 mt-6 p-4 rounded-xl bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] w-full text-left group cursor-pointer border border-gray-200 dark:border-gray-700"
+              >
+                <div class="flex -space-x-2">
+                  <img src="https://space.coze.cn/api/coze_space/gen_image?image_size=square&prompt=business%20professional%20avatar%201&sign=4cf5de27d286c677f1d0d15c046dde41" alt="Team member 1" class="w-10 h-10 rounded-full border-2 border-white group-hover:scale-110 transition-transform duration-300">
+                  <img src="https://space.coze.cn/api/coze_space/gen_image?image_size=square&prompt=business%20professional%20avatar%202&sign=734274bead09dfb78e7d368a9242019f" alt="Team member 2" class="w-10 h-10 rounded-full border-2 border-white group-hover:scale-110 transition-transform duration-300">
+                  <img src="https://space.coze.cn/api/coze_space/gen_image?image_size=square&prompt=business%20professional%20avatar%203&sign=faec03c67cdb110a131f397751408a27" alt="Team member 3" class="w-10 h-10 rounded-full border-2 border-white group-hover:scale-110 transition-transform duration-300">
+                  <img src="https://space.coze.cn/api/coze_space/gen_image?image_size=square&prompt=business%20professional%20avatar%204&sign=4046c7e0273f30e4e06f38d528964e29" alt="Team member 4" class="w-10 h-10 rounded-full border-2 border-white group-hover:scale-110 transition-transform duration-300">
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <p class="font-medium text-lg">
+                        <span class="lang-zh">专业团队</span>
+                        <span class="lang-en" style="display: none;">Professional Team</span>
+                      </p>
+                      <p class="text-sm opacity-70">
+                        <span class="lang-zh">10年以上行业经验</span>
+                        <span class="lang-en" style="display: none;">10+ years industry experience</span>
+                      </p>
+                    </div>
+                    <i class="fa fa-chevron-right text-blue-600 dark:text-blue-400 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1"></i>
+                  </div>
+                </div>
+              </button>
+            </div>
+            
+            <div class="order-1 md:order-2 scroll-reveal right">
+              <img 
+                src="https://i.postimg.cc/T3ktqgYk/about-us02.jpg" 
+                alt="公司简介图片" 
+                class="w-full h-auto rounded-xl shadow-xl"
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+     
+<!-- ==================== 品牌展示区域 ==================== -->
+<!-- 展示代理的品牌信息（麦高迪、东力减速机） -->
+<section id="brands" class="fullpage-section content-sparse py-20 bg-white dark:bg-gray-900">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-12 scroll-reveal">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">
+        <span class="lang-zh">代理品牌</span>
+        <span class="lang-en" style="display: none;">Brands We Represent</span>
+      </h2>
+      <p class="text-lg max-w-2xl mx-auto">
+        <span class="lang-zh">我们是全球知名工业传动品牌的官方授权代理商</span>
+        <span class="lang-en" style="display: none;">We are authorized distributors of globally renowned industrial transmission brands</span>
+      </p>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="p-6 rounded-xl shadow-lg bg-blue-50 dark:bg-gray-800 transition-all hover:shadow-xl scroll-reveal up">
+        <div class="flex flex-col items-center text-center mb-4">
+          <div class="mb-4">
+            <img 
+              src="https://i.postimg.cc/CM4j8Ghm/mai-gao-di-LOGO.png" 
+              alt="麦高迪品牌logo" 
+              class="h-24 object-contain"
+            >
+          </div>
+          <h3 class="text-2xl font-bold mb-2">麦高迪 (Megadyne)</h3>
+          <p class="text-blue-600 font-medium">
+            <span class="lang-zh">官方授权代理商</span>
+            <span class="lang-en" style="display: none;">Authorized Distributor</span>
+          </p>
+        </div>
+        <p class="mb-4">
+          <span class="lang-zh">麦高迪是全球领先的工业传动带制造商，产品广泛应用于各种工业领域。作为其授权代理商，我们提供全系列的麦高迪传动带产品，包括同步带、三角带、多楔带等。</span>
+          <span class="lang-en" style="display: none;">Megadyne is a global leader in industrial transmission belts, with products widely used in various industrial fields. As an authorized distributor, we provide the full range of Megadyne transmission belts, including synchronous belts, V-belts, multi-rib belts, etc.</span>
+        </p>
+        <ul class="space-y-2">
+          <li class="flex items-start">
+            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+            <span class="lang-zh">高品质橡胶同步带</span>
+            <span class="lang-en" style="display: none;">High-quality rubber synchronous belts</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+            <span class="lang-zh">工业三角带系列</span>
+            <span class="lang-en" style="display: none;">Industrial V-belt series</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+            <span class="lang-zh">特殊应用传动带解决方案</span>
+            <span class="lang-en" style="display: none;">Special application transmission belt solutions</span>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="p-6 rounded-xl shadow-lg bg-indigo-50 dark:bg-gray-800 transition-all hover:shadow-xl scroll-reveal up animate-delay-200">
+        <div class="flex flex-col items-center text-center mb-4">
+          <div class="mb-4">
+            <img 
+              src="https://i.postimg.cc/HLXCvsnR/1794aadfe4b922f6c52b4344ae3f45b2.png" 
+              alt="东力减速机品牌logo" 
+              class="h-24 object-contain"
+            >
+          </div>
+          <h3 class="text-2xl font-bold mb-2">东力减速机</h3>
+          <p class="text-indigo-600 font-medium">
+            <span class="lang-zh">官方授权代理商</span>
+            <span class="lang-en" style="display: none;">Authorized Distributor</span>
+          </p>
+        </div>
+        <p class="mb-4">
+          <span class="lang-zh">东力减速机是中国知名的减速电机制造商，产品以其可靠性和高性能而著称。我们提供东力全系列减速机产品，包括齿轮减速机、蜗轮蜗杆减速机等。</span>
+          <span class="lang-en" style="display: none;">Dongli gear reducer is a well-known Chinese gear motor manufacturer, with products renowned for reliability and high performance. We provide the full range of Dongli gear reducer products, including gear reducers, worm gear reducers, etc.</span>
+        </p>
+        <ul class="space-y-2">
+          <li class="flex items-start">
+            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+            <span class="lang-zh">高精度齿轮减速机</span>
+            <span class="lang-en" style="display: none;">High-precision gear reducers</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+            <span class="lang-zh">蜗轮蜗杆减速电机</span>
+            <span class="lang-en" style="display: none;">Worm gear reduction motors</span>
+          </li>
+          <li class="flex items-start">
+            <i class="fa fa-check text-green-500 mt-1 mr-2"></i>
+            <span class="lang-zh">定制化减速传动方案</span>
+            <span class="lang-en" style="display: none;">Customized reduction transmission solutions</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- ==================== 产品分类区域 ==================== -->
+    <!-- 展示主要产品分类，点击可查看产品详情 -->
+    <section id="products" class="fullpage-section content-sparse py-20 bg-gray-50 dark:bg-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12 scroll-reveal">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            <span class="lang-zh">产品分类</span>
+            <span class="lang-en" style="display: none;">Product Categories</span>
+          </h2>
+          <p class="text-lg max-w-2xl mx-auto">
+            <span class="lang-zh">我们提供全方位的工业传动产品，满足您的各种需求</span>
+            <span class="lang-en" style="display: none;">We provide comprehensive industrial transmission products to meet all your needs</span>
+          </p>
+        </div>
+        
+        <!-- 修改为两个板块的布局 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <!-- 皮带板块 -->
+          <div 
+            class="group rounded-2xl overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-2 bg-white dark:bg-gray-900 scroll-reveal up cursor-pointer"
+            onclick="showProductDetail('megadyne')"
+          >
+            <div class="relative h-64 overflow-hidden">
+              <img 
+                src="https://i.postimg.cc/hvbrJ755/maigaodibelt01.png" 
+                alt="皮带产品" 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 class="text-2xl font-bold mb-2">
+                  <span class="lang-zh">麦高迪皮带</span>
+                  <span class="lang-en" style="display: none;">Megadyne Belts</span>
+                </h3>
+                <p class="opacity-90">
+                  <span class="lang-zh">高品质工业传动皮带</span>
+                  <span class="lang-en" style="display: none;">High-quality industrial transmission belts</span>
+                </p>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-2">
+                  <span class="font-medium">
+                    <span class="lang-zh">查看详情</span>
+                    <span class="lang-en" style="display: none;">View details</span>
+                  </span>
+                </div>
+                <i class="fa fa-arrow-right text-blue-600 dark:text-blue-400 transform group-hover:translate-x-2 transition-transform duration-300"></i>
+              </div>
+              
+              <p class="text-gray-600 dark:text-gray-300 mb-4">
+                <span class="lang-zh">高品质工业传动皮带，适用于各种机械设备</span>
+                <span class="lang-en" style="display: none;">High-quality industrial transmission belts for various mechanical equipment</span>
+              </p>
+            </div>
+          </div>
+          
+          <!-- 减速机板块 -->
+          <div 
+            class="group rounded-2xl overflow-hidden shadow-xl transition-all duration-500 hover:shadow-2xl transform hover:-translate-y-2 bg-white dark:bg-gray-900 scroll-reveal up animate-delay-200 cursor-pointer"
+            onclick="showProductDetail('dongli')"
+          >
+            <div class="relative h-64 overflow-hidden">
+              <img 
+                src="https://i.postimg.cc/YjrnWngJ/dongli-head.jpg"
+                alt="减速机产品" 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+              <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                <h3 class="text-2xl font-bold mb-2">
+                  <span class="lang-zh">东力减速机</span>
+                  <span class="lang-en" style="display: none;">Dongli Gear Motor</span>
+                </h3>
+                <p class="opacity-90">
+                  <span class="lang-zh">高效可靠减速传动设备</span>
+                  <span class="lang-en" style="display: none;">Efficient and reliable reduction transmission equipment</span>
+                </p>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center space-x-2">
+                  <span class="font-medium">
+                    <span class="lang-zh">查看详情</span>
+                    <span class="lang-en" style="display: none;">View details</span>
+                  </span>
+                </div>
+                <i class="fa fa-arrow-right text-indigo-600 dark:text-indigo-400 transform group-hover:translate-x-2 transition-transform duration-300"></i>
+              </div>
+              
+              <p class="text-gray-600 dark:text-gray-300 mb-4">
+                <span class="lang-zh">高效可靠的减速电机，为您的设备提供稳定动力</span>
+                <span class="lang-en" style="display: none;">Efficient and reliable reduction motors providing stable power for your equipment</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+       <!--<div class="text-center mt-12">
+         <button 
+           class="inline-flex items-center px-6 py-3 rounded-full font-medium transition-all bg-blue-600 text-white hover:bg-blue-700 shadow-lg hover:shadow-xl"
+         >
+           <span class="lang-zh">查看全部产品</span>
+           <span class="lang-en" style="display: none;">View All Products</span>
+           <i class="fa fa-chevron-right ml-2"></i>
+         </button>
+       </div>-->
+ 
+   <!-- ==================== 公司优势区域 ==================== -->
+   <!-- 展示公司的核心优势和竞争力 -->
+   <section id="advantages" class="fullpage-section content-sparse py-20 bg-white dark:bg-gray-900">
+     <div class="container mx-auto px-4">
+       <div class="text-center mb-12 scroll-reveal">
+         <h2 class="text-3xl md:text-4xl font-bold mb-4">
+           <span class="lang-zh">我们的优势</span>
+           <span class="lang-en" style="display: none;">Our Advantages</span>
+         </h2>
+         <p class="text-lg max-w-2xl mx-auto">
+           <span class="lang-zh">选择我们作为您的工业传动产品供应商，享受专业的服务和优质的产品</span>
+           <span class="lang-en" style="display: none;">Choose us as your industrial transmission product supplier for professional services and quality products</span>
+         </p>
+       </div>
+       
+       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+         <div class="p-6 rounded-xl text-center bg-gray-50 dark:bg-gray-800 shadow-md transition-all duration-300 hover:shadow-lg scroll-reveal up">
+           <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400">
+             <i class="fa fa-certificate text-2xl"></i>
+           </div>
+           <h3 class="text-xl font-bold mb-2">
+             <span class="lang-zh">官方授权代理</span>
+             <span class="lang-en" style="display: none;">Authorized Distributor</span>
+           </h3>
+           <p class="text-gray-600 dark:text-gray-400">
+             <span class="lang-zh">麦高迪和东力减速机的官方授权代理商，确保产品正品保障</span>
+             <span class="lang-en" style="display: none;">Authorized distributor of Megadyne and Dongli gear reducers ensuring genuine products</span>
+           </p>
+         </div>
+         
+         <div class="p-6 rounded-xl text-center bg-gray-50 dark:bg-gray-800 shadow-md transition-all duration-300 hover:shadow-lg scroll-reveal up animate-delay-100">
+           <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400">
+             <i class="fa fa-truck text-2xl"></i>
+           </div>
+           <h3 class="text-xl font-bold mb-2">
+             <span class="lang-zh">全球物流网络</span>
+             <span class="lang-en" style="display: none;">Global Logistics Network</span>
+           </h3>
+           <p class="text-gray-600 dark:text-gray-400">
+             <span class="lang-zh">完善的国际物流体系，确保产品安全快速送达全球各地</span>
+             <span class="lang-en" style="display: none;">Complete international logistics system ensuring safe and fast delivery worldwide</span>
+           </p>
+         </div>
+         
+         <div class="p-6 rounded-xl text-center bg-gray-50 dark:bg-gray-800 shadow-md transition-all duration-300 hover:shadow-lg scroll-reveal up animate-delay-200">
+           <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400">
+             <i class="fa fa-headphones text-2xl"></i>
+           </div>
+           <h3 class="text-xl font-bold mb-2">
+             <span class="lang-zh">专业技术支持</span>
+             <span class="lang-en" style="display: none;">Professional Technical Support</span>
+           </h3>
+           <p class="text-gray-600 dark:text-gray-400">
+             <span class="lang-zh">拥有专业的技术团队，为客户提供全方位的技术解决方案</span>
+             <span class="lang-en" style="display: none;">Professional technical team providing comprehensive technical solutions</span>
+           </p>
+         </div>
+         
+         <div class="p-6 rounded-xl text-center bg-gray-50 dark:bg-gray-800 shadow-md transition-all duration-300 hover:shadow-lg scroll-reveal up animate-delay-300">
+           <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400">
+             <i class="fa fa-shield text-2xl"></i>
+           </div>
+           <h3 class="text-xl font-bold mb-2">
+             <span class="lang-zh">优质售后服务</span>
+             <span class="lang-en" style="display: none;">Quality After-sales Service</span>
+           </h3>
+           <p class="text-gray-600 dark:text-gray-400">
+             <span class="lang-zh">完善的售后保障体系，让您的采购无后顾之忧</span>
+             <span class="lang-en" style="display: none;">Comprehensive after-sales protection system ensuring worry-free procurement</span>
+           </p>
+         </div>
+       </div>
+     </div>
+   </section>
+   
+   <!-- ==================== 联系我们区域 ==================== -->
+   <!-- 显示公司联系方式、地址、工作时间等信息 -->
+   <section id="contact" class="fullpage-section content-sparse py-20 bg-blue-50 dark:bg-gray-800">
+     <div class="container mx-auto px-4">
+       <div class="text-center mb-12 scroll-reveal">
+         <h2 class="text-3xl md:text-4xl font-bold mb-4">
+           <span class="lang-zh">联系我们</span>
+           <span class="lang-en" style="display: none;">Contact Us</span>
+         </h2>
+         <p class="text-lg max-w-2xl mx-auto">
+           <span class="lang-zh">如需了解更多信息或有任何疑问，请随时与我们联系</span>
+           <span class="lang-en" style="display: none;">For more information or any questions, feel free to contact us</span>
+         </p>
+       </div>
+       
+        <div class="max-w-3xl mx-auto">
+          <div class="scroll-reveal left">
+            <div class="p-8 rounded-xl bg-white dark:bg-gray-900 shadow-xl">
+              <h3 class="text-2xl font-bold mb-6">
+                <span class="lang-zh">联系信息</span>
+                <span class="lang-en" style="display: none;">Contact Information</span>
+              </h3>
+              
+              <div class="space-y-6">
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400">
+                    <i class="fa fa-map-marker"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-1">
+                      <span class="lang-zh">公司地址</span>
+                      <span class="lang-en" style="display: none;">Company Address</span>
+                    </h4>
+                    <p>
+                      <span class="lang-zh">广东省佛山市禅城区春风市场信诚通机电有限公司</span>
+                      <span class="lang-en" style="display: none;">Xinchengtong Mechanical & Electrical Co., Ltd, Chunfeng Market, Chancheng District, Foshan City, Guangdong Province</span>
+                    </p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400">
+                    <i class="fa fa-phone"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-1">
+                      <span class="lang-zh">联系电话</span>
+                      <span class="lang-en" style="display: none;">Phone Number</span>
+                    </h4>
+                    <p>+86 134 2594 0799</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400">
+                    <i class="fa fa-envelope"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-1">
+                      <span class="lang-zh">电子邮箱</span>
+                      <span class="lang-en" style="display: none;">Email</span>
+                    </h4>
+                    <p>sales1@foshan-awa.com</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-start">
+                  <div class="w-10 h-10 rounded-full flex items-center justify-center mr-4 flex-shrink-0 bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-blue-400">
+                    <i class="fa fa-clock-o"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-1">
+                      <span class="lang-zh">工作时间</span>
+                      <span class="lang-en" style="display: none;">Business Hours</span>
+                    </h4>
+                    <p>
+                      <span class="lang-zh">周一至周六: 8:30 - 18:00</span>
+                      <span class="lang-en" style="display: none;">Monday to Saturday: 8:30 - 18:00</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-8">
+                <h4 class="font-medium mb-3">
+                  <span class="lang-zh">关注我们</span>
+                  <span class="lang-en" style="display: none;">Follow Us</span>
+                </h4>
+                <div class="flex space-x-4">
+                  <a 
+                    href="https://linkedin.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 dark:bg-gray-800 hover:bg-blue-200 dark:hover:bg-gray-700 text-blue-600 transition-colors overflow-hidden"
+                    aria-label="访问LinkedIn"
+                  >
+                    <img 
+                      src="https://space-static.coze.site/coze_space/7588432578882732326/upload/linkedin_icon-icons.com_65929_512x512.png?sign=1769565486-9b716631f6-0-145cd7e2c132a54d74a9ebb6afa60fc7175b75b11cfcf250018b157895647a50" 
+                      alt="LinkedIn" 
+                      class="w-full h-full object-contain"
+                    >
+                  </a>
+                  <a 
+                    href="https://facebook.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 dark:bg-gray-800 hover:bg-blue-200 dark:hover:bg-gray-700 text-blue-600 transition-colors overflow-hidden"
+                    aria-label="访问Facebook"
+                  >
+                    <img 
+                      src="https://space-static.coze.site/coze_space/7588432578882732326/upload/facebook_icon-icons.com_59205_512x512.png?sign=1769565490-a68ab31ee4-0-f3d6e7fdd4ca8139f0533c5274fc7c77ec2bd7259e052c1801c2ccc1770e86aa" 
+                      alt="Facebook" 
+                      class="w-full h-full object-contain"
+                    >
+                  </a>
+                  <a 
+                    href="https://twitter.com" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-100 dark:bg-gray-800 hover:bg-blue-200 dark:hover:bg-gray-700 text-blue-600 transition-colors overflow-hidden"
+                    aria-label="访问Twitter"
+                  >
+                    <img 
+                      src="https://s.coze.cn/t/llxe0XYlQBE/" 
+                      alt="Twitter" 
+                      class="w-full h-full object-contain"
+                    >
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+     </div>
+   </section>
+   
+   <!-- ==================== 页脚区域 ==================== -->
+   <!-- 显示公司信息和版权信息 -->
+   <footer class="py-14 bg-gray-900 dark:bg-black border-t-4 border-blue-500 text-white">
+     <div class="container mx-auto px-4">
+       <div class="grid grid-cols-1 gap-8">
+         <div>
+           <div class="flex items-center space-x-2 mb-4">
+             <h3 
+               class="text-xl font-bold"
+               style="font-size: 18px; text-align-last: auto"
+             >
+               <span class="lang-zh">佛山市信诚通机电有限公司</span>
+               <span class="lang-en" style="display: none;">FOSHAN AWA INDUSTRIAL</span>
+             </h3>
+           </div>
+           <p class="mb-4 text-gray-600 dark:text-gray-400">
+             <span class="lang-zh">专业的工业传动产品外贸代理商，为全球客户提供高品质的传动解决方案。</span>
+             <span class="lang-en" style="display: none;">Professional export agent for industrial transmission products, providing high-quality transmission solutions for global customers.</span>
+           </p>
+         </div>
+       </div>
+       
+       <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400">
+         <div class="flex flex-col md:flex-row justify-between items-center">
+           <p>&copy; 2025 
+             <span class="lang-zh">工业传动系统专家. 保留所有权利.</span>
+             <span class="lang-en" style="display: none;">Industrial Transmission System Expert. All rights reserved.</span>
+           </p>
+         </div>
+       </div>
+     </div>
+   </footer>
+ </div>
+ 
+<!-- ==================== 产品详情页内容 ==================== -->
+<!-- 
+  功能:
+  - 显示产品详细信息（标题、描述、特点、技术参数）
+  - 左侧分类导航栏（仅针对有分类的产品）
+  - 相关产品推荐
+-->
+<div id="product-detail-page" class="hidden">
+  <!-- ==================== 产品详情页导航栏 ==================== -->
+  <nav class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <button 
+          class="mr-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          onclick="showHomePage()"
+        >
+          <i class="fa fa-arrow-left"></i>
+        </button>
+        <h1 class="text-xl font-bold">
+          <span class="lang-zh">产品详情页</span>
+          <span class="lang-en" style="display: none;">Product Details Page</span>
+        </h1>
+      </div>
+      
+      <div class="flex items-center space-x-4">
+        <!-- 产品详情页的语言切换按钮 -->
+        <div class="language-switcher">
+          <label for="language-zh" class="lang-label">中</label>
+          <label for="language-en" class="lang-label">EN</label>
+        </div>
+        
+        <button 
+  id="productThemeToggle" 
+  onclick="toggleTheme()"
+  class="p-2 rounded-full bg-blue-100 hover:bg-blue-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-blue-600 dark:text-yellow-400 transition-colors shadow-sm"
+  aria-label="切换主题"
+>
+  <i class="fa fa-moon dark:hidden text-lg"></i>
+  <i class="fa fa-sun-o hidden dark:block text-lg"></i>
+</button>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- ==================== 产品详情内容区域 ==================== -->
+  <section class="py-10 bg-gray-50 dark:bg-gray-800">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- ==================== 左侧分类导航栏 ==================== -->
+        <!-- 仅当产品属于某个分类时显示，用于快速切换同类产品 -->
+        <div id="category-nav" style="display: none;" class="lg:block">
+          <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 sticky top-24">
+            <h3 id="nav-category-title" class="text-lg font-bold mb-4"></h3>
+            <div id="nav-items-container" class="space-y-2">
+              <!-- 动态生成 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ==================== 主内容区域 ==================== -->
+        <!-- 包含产品标题、图片、描述、特点、技术参数、相关产品等 -->
+        <div class="lg:col-span-3">
+          <div class="mb-8">
+            <h1 id="product-title" class="text-3xl font-bold"></h1>
+            <div class="h-1 w-20 bg-blue-600 mt-2"></div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden product-image-container">
+          <img 
+            id="product-image" 
+            src="" 
+            alt="" 
+            class="w-full h-auto object-contain transition-transform duration-500 hover:scale-105"
+          >
+        </div>
+        
+        <div>
+          <div class="mb-6">
+            <h2 id="product-subtitle" class="text-2xl font-bold mb-2"></h2>
+          </div>
+          
+          <div class="mb-6">
+            <h3 class="text-lg font-bold mb-3">
+              <span class="lang-zh">产品描述</span>
+              <span class="lang-en" style="display: none;">Product Description</span>
+            </h3>
+            <p id="product-description" class="text-gray-600 dark:text-gray-400 leading-relaxed"></p>
+          </div>
+          
+          <div class="mb-8">
+            <h3 class="text-lg font-bold mb-3">
+              <span class="lang-zh">产品特点</span>
+              <span class="lang-en" style="display: none;">Product Features</span>
+            </h3>
+            <ul id="product-features" class="space-y-3">
+            </ul>
+          </div>
+          
+          <div class="flex flex-wrap gap-4">
+            <button 
+              onclick="scrollToContactFromProductDetail()"
+              class="px-6 py-3 border border-blue-600 text-blue-600 rounded-full font-medium hover:bg-blue-50 dark:hover:bg-gray-800 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1 duration-300"
+            >
+              <span class="lang-zh">联系我们</span>
+              <span class="lang-en" style="display: none;">Contact Us</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      
+      <!-- ==================== 技术参数表格 ==================== -->
+      <!-- 显示产品的详细技术规格参数，部分产品可能没有此部分 -->
+      <div id="specs-section" class="mb-16 bg-white dark:bg-gray-900 p-8 rounded-xl shadow-lg">
+        <h3 class="text-2xl font-bold mb-6">
+          <span class="lang-zh">技术参数</span>
+          <span class="lang-en" style="display: none;">Technical Specifications</span>
+        </h3>
+        <div class="overflow-x-auto">
+          <table id="product-specs" class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-100 dark:bg-gray-800">
+                <th class="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <span class="lang-zh">参数</span>
+                  <span class="lang-en" style="display: none;">Parameter</span>
+                </th>
+                <th class="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <span class="lang-zh">值</span>
+                  <span class="lang-en" style="display: none;">Value</span>
+                </th>
+                <th class="p-4 border-b border-gray-200 dark:border-gray-700">
+                  <span class="lang-zh">单位</span>
+                  <span class="lang-en" style="display: none;">Unit</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 动态生成 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+      <!-- ==================== 相关产品推荐 ==================== -->
+      <!-- 显示其他主要产品类别，方便用户浏览 -->
+      <div id="related-products">
+        <h3 class="text-2xl font-bold mb-6">
+          <span class="lang-zh">相关产品</span>
+          <span class="lang-en" style="display: none;">Related Products</span>
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- 动态生成 -->
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- ==================== 产品详情页页脚 ==================== -->
+  <footer class="py-10 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <i class="fa fa-cogs text-2xl text-blue-600"></i>
+            <h3 class="text-xl font-bold">
+              <span class="lang-zh">工业传动系统专家</span>
+              <span class="lang-en" style="display: none;">Industrial Transmission System Expert</span>
+            </h3>
+          </div>
+          <p class="mb-4 text-gray-600 dark:text-gray-400">
+            <span class="lang-zh">专业的工业传动产品外贸代理商，为全球客户提供高品质的传动解决方案。</span>
+            <span class="lang-en" style="display: none;">Professional export agent for industrial transmission products, providing high-quality transmission solutions for global customers.</span>
+          </p>
+        </div>
+      </div>
+      
+      <div class="mt-10 pt-6 border-t border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <p>&copy; 2025 
+            <span class="lang-zh">工业传动系统专家. 保留所有权利.</span>
+            <span class="lang-en" style="display: none;">Industrial Transmission System Expert. All rights reserved.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+  <!-- ==================== 专业团队页面 ==================== -->
+<div id="team-page" class="hidden">
+    <!-- 团队页面导航栏 -->
+    <nav class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md">
+      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <button 
+            class="mr-2 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+            onclick="showHomePage()"
+          >
+            <i class="fa fa-arrow-left"></i>
+          </button>
+          <i class="fa fa-users text-2xl text-blue-600"></i>
+          <h1 class="text-xl font-bold">
+            <span class="lang-zh">专业团队</span>
+            <span class="lang-en" style="display: none;">Professional Team</span>
+          </h1>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <div class="language-switcher">
+            <label for="language-zh" class="lang-label">中</label>
+            <label for="language-en" class="lang-label">EN</label>
+          </div>
+          
+          <button 
+            id="teamThemeToggle" 
+            onclick="toggleTheme()"
+            class="p-2 rounded-full bg-blue-100 hover:bg-blue-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-blue-600 dark:text-yellow-400 transition-colors shadow-sm"
+            aria-label="切换主题"
+          >
+            <i class="fa fa-moon dark:hidden text-lg"></i>
+            <i class="fa fa-sun-o hidden dark:block text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- 团队页面内容 -->
+    <section class="py-10 bg-gray-50 dark:bg-gray-800 min-h-screen">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12 animate-fade-in">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">
+            <span class="lang-zh">我们的专业团队</span>
+            <span class="lang-en" style="display: none;">Our Professional Team</span>
+          </h1>
+          <p class="text-lg max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
+            <span class="lang-zh">拥有10年以上行业经验的精英团队，为客户提供专业的技术支持和解决方案</span>
+            <span class="lang-en" style="display: none;">Elite team with over 10 years of industry experience, providing professional technical support and solutions for customers</span>
+          </p>
+        </div>
+        
+        <!-- 团队成员网格 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <!-- 团队成员1 -->
+          <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+            <div class="p-6 text-center">
+              <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-100 dark:border-gray-700 group-hover:border-blue-300 transition-colors duration-300">
+                <img 
+                  src="https://i.postimg.cc/d09B5CBg/team-member01.png" 
+                  alt="毛夕祥 - 总经理"
+                  class="w-full h-full object-cover"
+                >
+              </div>
+              <h3 class="text-xl font-bold mb-2">毛夕祥</h3>
+              <p class="text-blue-600 dark:text-blue-400 font-medium mb-4">
+                <span class="lang-zh">总经理</span>
+                <span class="lang-en" style="display: none;">General Manager</span>
+              </p>
+              <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                <span class="lang-zh">14年工业传动行业经验，精通国际贸易和供应链管理，带领团队为客户提供最佳解决方案</span>
+                <span class="lang-en" style="display: none;">14 years of experience in industrial transmission industry, proficient in international trade and supply chain management, leading the team to provide optimal solutions for customers</span>
+              </p>
+              <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="flex justify-center space-x-2">
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">战略规划</span>
+                    <span class="lang-en" style="display: none;">Strategy</span>
+                  </span>
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">国际贸易</span>
+                    <span class="lang-en" style="display: none;">International Trade</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 团队成员2 -->
+          <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+            <div class="p-6 text-center">
+              <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-100 dark:border-gray-700 group-hover:border-blue-300 transition-colors duration-300">
+                <img 
+                  src="https://i.postimg.cc/d09B5CBR/team-member02.png" 
+                  alt="罗石英 - 销售经理"
+                  class="w-full h-full object-cover"
+                >
+              </div>
+              <h3 class="text-xl font-bold mb-2">罗石英</h3>
+              <p class="text-blue-600 dark:text-blue-400 font-medium mb-4">
+                <span class="lang-zh">销售经理</span>
+                <span class="lang-en" style="display: none;">Sales Manager</span>
+              </p>
+              <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                <span class="lang-zh">10年外贸销售经验，熟悉全球市场，精通英语，服务过50多个国家的客户</span>
+                <span class="lang-en" style="display: none;">10 years of export sales experience, familiar with global markets, proficient in English, served customers from over 50 countries</span>
+              </p>
+              <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="flex justify-center space-x-2">
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">外贸销售</span>
+                    <span class="lang-en" style="display: none;">Export Sales</span>
+                  </span>
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">客户关系</span>
+                    <span class="lang-en" style="display: none;">Customer Relations</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 团队成员3 -->
+          <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+            <div class="p-6 text-center">
+              <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-100 dark:border-gray-700 group-hover:border-blue-300 transition-colors duration-300">
+                <img 
+                  src="https://i.postimg.cc/sXDJq26b/team-member03.png" 
+                  alt="邓伟华 - 仓库主管"
+                  class="w-full h-full object-cover"
+                >
+              </div>
+              <h3 class="text-xl font-bold mb-2">邓伟华</h3>
+              <p class="text-blue-600 dark:text-blue-400 font-medium mb-4">
+                <span class="lang-zh">仓库主管</span>
+                <span class="lang-en" style="display: none;">Warehouse Manager</span>
+              </p>
+              <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                <span class="lang-zh">拥有12年一线仓库管理经验，深谙国际物流与仓储运营精髓。</span>
+                <span class="lang-en" style="display: none;">12 years of frontline warehouse management experience, deeply familiar with international logistics and warehouse operations.</span>
+              </p>
+              <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="flex justify-center space-x-2">
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">仓储管理</span>
+                    <span class="lang-en" style="display: none;">Warehouse Management</span>
+                  </span>
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">效率高效</span>
+                    <span class="lang-en" style="display: none;">Efficiency</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 团队成员4 -->
+          <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+            <div class="p-6 text-center">
+              <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-blue-100 dark:border-gray-700 group-hover:border-blue-300 transition-colors duration-300">
+                <img 
+                  src="https://i.postimg.cc/HLt26M2N/team-member04.png" 
+                  alt="刘秀和 - 财务总监"
+                  class="w-full h-full object-cover"
+                >
+              </div>
+              <h3 class="text-xl font-bold mb-2">刘秀和</h3>
+              <p class="text-blue-600 dark:text-blue-400 font-medium mb-4">
+                <span class="lang-zh">财务总监</span>
+                <span class="lang-en" style="display: none;">Finance Director</span>
+              </p>
+              <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                <span class="lang-zh">深耕外贸行业财务管理6年，精通国际结算和外汇风险管理。</span>
+                <span class="lang-en" style="display: none;">With 6 years of financial management experience in the foreign trade industry, specialize in international settlement and foreign exchange risk management.</span>
+              </p>
+              <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                <div class="flex justify-center space-x-2">
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">财务管理</span>
+                    <span class="lang-en" style="display: none;">Finance Management</span>
+                  </span>
+                  <span class="inline-block px-3 py-1 bg-blue-50 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">
+                    <span class="lang-zh">外汇风险管理</span>
+                    <span class="lang-en" style="display: none;">FX Risk Management</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 团队价值观 -->
+        <div class="mt-16 max-w-4xl mx-auto">
+          <div class="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-8 shadow-lg">
+            <h3 class="text-2xl font-bold mb-6 text-center">
+              <span class="lang-zh">团队价值观</span>
+              <span class="lang-en" style="display: none;">Team Values</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="text-center">
+                <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                  <i class="fa fa-handshake-o text-blue-600 dark:text-blue-400 text-xl"></i>
+                </div>
+                <h4 class="font-bold mb-2">
+                  <span class="lang-zh">诚信专业</span>
+                  <span class="lang-en" style="display: none;">Integrity & Professionalism</span>
+                </h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                  <span class="lang-zh">以诚信为本，专业服务赢得客户信任</span>
+                  <span class="lang-en" style="display: none;">Built on integrity, professional service earns customer trust</span>
+                </p>
+              </div>
+              <div class="text-center">
+                <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                  <i class="fa fa-lightbulb-o text-blue-600 dark:text-blue-400 text-xl"></i>
+                </div>
+                <h4 class="font-bold mb-2">
+                  <span class="lang-zh">创新进取</span>
+                  <span class="lang-en" style="display: none;">Innovation & Progress</span>
+                </h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                  <span class="lang-zh">不断学习创新，追求卓越解决方案</span>
+                  <span class="lang-en" style="display: none;">Continuous learning and innovation, pursuing excellent solutions</span>
+                </p>
+              </div>
+              <div class="text-center">
+                <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                  <i class="fa fa-users text-blue-600 dark:text-blue-400 text-xl"></i>
+                </div>
+                <h4 class="font-bold mb-2">
+                  <span class="lang-zh">协作共赢</span>
+                  <span class="lang-en" style="display: none;">Collaboration & Win-Win</span>
+                </h4>
+                <p class="text-sm text-gray-600 dark:text-gray-300">
+                  <span class="lang-zh">团队协作，与客户共同成长发展</span>
+                  <span class="lang-en" style="display: none;">Team collaboration, growing and developing with customers</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- 团队页面页脚 -->
+    <footer class="py-8 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="flex items-center space-x-2 mb-4 md:mb-0">
+            <i class="fa fa-users text-xl text-blue-600"></i>
+            <span class="text-lg font-medium">
+              <span class="lang-zh">佛山信诚通机电有限公司</span>
+              <span class="lang-en" style="display: none;">FOSHAN AWA INDUSTRIAL</span>
+            </span>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400 text-sm text-center">
+            &copy; 2025 
+            <span class="lang-zh">工业传动系统专家 | 专业团队</span>
+            <span class="lang-en" style="display: none;">Industrial Transmission System Expert | Professional Team</span>
+          </p>
+        </div>
+      </div>
+    </footer>
+</div>
+
+ <!-- ==================== JavaScript 代码 ==================== -->
+  <script>
+    /**
+     * ========================================================================
+     * 轮播图相关变量和函数
+     * ========================================================================
+     */
+    let currentSlideIndex = 0;
+    const totalSlides = 4;
+    let carouselAutoplayTimer = null;
+
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.carousel-slide');
+      const dots = document.querySelectorAll('.carousel-dot');
+      
+      if (index >= totalSlides) {
+        currentSlideIndex = 0;
+      } else if (index < 0) {
+        currentSlideIndex = totalSlides - 1;
+      } else {
+        currentSlideIndex = index;
+      }
+      
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === currentSlideIndex) {
+          slide.classList.add('active');
+        }
+      });
+      
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        if (i === currentSlideIndex) {
+          dot.classList.add('active');
+        }
+      });
+      
+      resetCarouselAutoplay();
+    }
+
+    function nextSlide() {
+      showSlide(currentSlideIndex + 1);
+    }
+
+    function prevSlide() {
+      showSlide(currentSlideIndex - 1);
+    }
+
+    function currentSlide(index) {
+      showSlide(index);
+    }
+
+    function autoplayCarousel() {
+      nextSlide();
+    }
+
+    function resetCarouselAutoplay() {
+      if (carouselAutoplayTimer) {
+        clearInterval(carouselAutoplayTimer);
+      }
+      carouselAutoplayTimer = setInterval(autoplayCarousel, 5000); // 每5秒自动切换
+    }
+
+    /**
+     * 自动检测并设置内容的垂直对齐方式
+     */
+    function setupContentAlignment() {
+      // 对于内容多的区域，添加content-rich类
+      const sections = document.querySelectorAll('.fullpage-section');
+      sections.forEach(section => {
+        // 跳过英雄区域
+        if (section.id === 'hero') {
+          section.classList.remove('content-rich');
+          section.classList.remove('content-sparse');
+          return;
+        }
+        
+        const contentHeight = section.scrollHeight;
+        const viewportHeight = window.innerHeight - 80; // 减去导航栏高度
+        
+        if (contentHeight > viewportHeight * 0.8) {
+          // 内容高度超过视口高度的80%，视为内容多的区域
+          section.classList.add('content-rich');
+          section.classList.remove('content-sparse');
+        } else {
+          // 内容较少，保持居中
+          section.classList.add('content-sparse');
+          section.classList.remove('content-rich');
+        }
+      });
+    }
+
+    // 窗口大小改变时重新设置内容对齐和轮播图
+    window.addEventListener('resize', function() {
+      setupContentAlignment();
+      
+      // 重新计算轮播图高度
+      const carousel = document.querySelector('.carousel');
+      if (carousel) {
+        carousel.style.height = window.innerHeight + 'px';
+      }
+    });
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', init);
+
+    /**
+     * 显示指定索引的轮播图
+     * @param {number} index - 要显示的轮播图索引
+     */
+    function showSlide(index) {
+      const slides = document.querySelectorAll('.carousel-slide');
+      const dots = document.querySelectorAll('.carousel-dot');
+      
+      if (index >= totalSlides) {
+        currentSlideIndex = 0;
+      } else if (index < 0) {
+        currentSlideIndex = totalSlides - 1;
+      } else {
+        currentSlideIndex = index;
+      }
+      
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === currentSlideIndex) {
+          slide.classList.add('active');
+        }
+      });
+      
+      dots.forEach((dot, i) => {
+        dot.classList.remove('active');
+        if (i === currentSlideIndex) {
+          dot.classList.add('active');
+        }
+      });
+      
+      // 重置自动播放计时器
+      resetCarouselAutoplay();
+    }
+
+    /**
+     * 切换到下一张轮播图
+     */
+    function nextSlide() {
+      showSlide(currentSlideIndex + 1);
+    }
+
+    /**
+     * 切换到上一张轮播图
+     */
+    function prevSlide() {
+      showSlide(currentSlideIndex - 1);
+    }
+
+    /**
+     * 切换到指定的轮播图
+     * @param {number} index - 要显示的轮播图索引
+     */
+    function currentSlide(index) {
+      showSlide(index);
+    }
+
+    /**
+     * 自动播放轮播图
+     */
+    function autoplayCarousel() {
+      nextSlide();
+    }
+
+    /**
+     * 重置轮播图自动播放计时器
+     */
+    function resetCarouselAutoplay() {
+      if (carouselAutoplayTimer) {
+        clearInterval(carouselAutoplayTimer);
+      }
+      carouselAutoplayTimer = setInterval(autoplayCarousel, 5000); // 每5秒自动切换
+    }
+
+    /**
+     * ========================================================================
+     * 全屏滚动相关函数
+     * ========================================================================
+     */
+    let isScrolling = false; // 防止滚动冲突
+    let scrollTimeout = null; // 滚动节流计时器
+    let currentSectionIndex = 0; // 当前显示的区域索引
+    const sections = []; // 存储所有全屏区域
+
+    /**
+     * 初始化全屏滚动
+     */
+    function initFullPageScroll() {
+    // 获取所有全屏区域
+    const sectionElements = document.querySelectorAll('.fullpage-section');
+    sections.length = 0; // 清空数组
+    
+    // 将元素转换为数组并存储
+    sectionElements.forEach(section => {
+        sections.push(section);
+    });
+    
+    if (sections.length > 0) {
+        // 初始化第一个区域为当前区域
+        currentSectionIndex = 0;
+        scrollToSectionByIndex(currentSectionIndex);
+        
+        // 添加滚动事件监听
+        window.addEventListener('wheel', handleWheelScroll, { passive: false });
+        window.addEventListener('keydown', handleKeyScroll);
+        
+        // 添加触摸事件支持（移动端）
+        window.addEventListener('touchstart', handleTouchStart, { passive: false });
+        window.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
+    }
+
+    /**
+     * 销毁全屏滚动（切换到其他页面时）
+     */
+    function destroyFullPageScroll() {
+    window.removeEventListener('wheel', handleWheelScroll);
+    window.removeEventListener('keydown', handleKeyScroll);
+    window.removeEventListener('touchstart', handleTouchStart);
+    window.removeEventListener('touchend', handleTouchEnd);
+    }
+
+    /**
+     * 处理鼠标滚轮滚动
+     * @param {WheelEvent} e - 滚轮事件
+     */
+    function handleWheelScroll(e) {
+    // 阻止默认滚动行为
+    e.preventDefault();
+    
+    // 如果正在滚动中，忽略此次滚动
+    if (isScrolling) return;
+    
+    // 设置滚动状态
+    isScrolling = true;
+    
+    // 根据滚动方向决定滚动到哪个区域
+    if (e.deltaY > 0) {
+        // 向下滚动 - 下一个区域
+        scrollToNextSection();
+    } else {
+        // 向上滚动 - 上一个区域
+        scrollToPrevSection();
+    }
+    
+    // 设置节流，防止连续滚动
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+    }, 800); // 800ms内不允许再次滚动
+    }
+
+    /**
+     * 处理键盘滚动（上下箭头键）
+     * @param {KeyboardEvent} e - 键盘事件
+     */
+    function handleKeyScroll(e) {
+    // 如果正在滚动中，忽略此次按键
+    if (isScrolling) return;
+    
+    switch (e.key) {
+        case 'ArrowDown':
+        case 'PageDown':
+        e.preventDefault();
+        scrollToNextSection();
+        break;
+        case 'ArrowUp':
+        case 'PageUp':
+        e.preventDefault();
+        scrollToPrevSection();
+        break;
+        case 'Home':
+        e.preventDefault();
+        scrollToSectionByIndex(0);
+        break;
+        case 'End':
+        e.preventDefault();
+        scrollToSectionByIndex(sections.length - 1);
+        break;
+    }
+    }
+
+    // 触摸相关变量
+    let touchStartY = 0;
+    let touchEndY = 0;
+    const MIN_SWIPE_DISTANCE = 50; // 最小滑动距离
+
+    /**
+     * 处理触摸开始事件
+     * @param {TouchEvent} e - 触摸事件
+     */
+    function handleTouchStart(e) {
+    touchStartY = e.changedTouches[0].screenY;
+    }
+
+    /**
+     * 处理触摸结束事件
+     * @param {TouchEvent} e - 触摸事件
+     */
+    function handleTouchEnd(e) {
+    touchEndY = e.changedTouches[0].screenY;
+    
+    // 计算滑动距离
+    const swipeDistance = touchStartY - touchEndY;
+    
+    // 如果滑动距离足够大，则触发滚动
+    if (Math.abs(swipeDistance) > MIN_SWIPE_DISTANCE) {
+        e.preventDefault();
+        
+        if (swipeDistance > 0) {
+        // 向上滑动 - 下一个区域
+        scrollToNextSection();
+        } else {
+        // 向下滑动 - 上一个区域
+        scrollToPrevSection();
+        }
+    }
+    }
+
+    /**
+     * 滚动到下一个区域
+     */
+    function scrollToNextSection() {
+    if (currentSectionIndex < sections.length - 1) {
+        currentSectionIndex++;
+        scrollToSectionByIndex(currentSectionIndex);
+    }
+    }
+
+    /**
+     * 滚动到上一个区域
+     */
+    function scrollToPrevSection() {
+    if (currentSectionIndex > 0) {
+        currentSectionIndex--;
+        scrollToSectionByIndex(currentSectionIndex);
+    }
+    }
+
+    /**
+     * 滚动到指定索引的区域
+     * @param {number} index - 区域索引
+     */
+    function scrollToSectionByIndex(index) {
+    if (index >= 0 && index < sections.length) {
+        currentSectionIndex = index;
+        const section = sections[index];
+        
+        // 平滑滚动到该区域
+        section.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+        });
+        
+        // 更新URL哈希（可选）
+        updateUrlHash(section.id);
+        
+        // 更新导航指示器（可选）
+        updateNavigationIndicator(index);
+    }
+    }
+
+    /**
+     * 更新URL哈希
+     * @param {string} sectionId - 区域ID
+     */
+    function updateUrlHash(sectionId) {
+    if (sectionId) {
+        history.replaceState(null, null, `#${sectionId}`);
+    }
+    }
+
+    /**
+     * 更新导航指示器
+     * @param {number} activeIndex - 当前活动区域索引
+     */
+    function updateNavigationIndicator(activeIndex) {
+    // 可以在这里添加导航指示器的更新逻辑
+    // 例如：更新侧边导航点、更新导航栏状态等
+    }
+
+    /**
+     * 跳转到指定区域（兼容原有函数）
+     * @param {string} id - 区域ID
+     */
+    function scrollToSection(id) {
+    const section = document.getElementById(id);
+    if (section) {
+        const index = Array.from(sections).indexOf(section);
+        if (index !== -1) {
+        scrollToSectionByIndex(index);
+        } else {
+        // 如果不是全屏区域，使用原来的滚动逻辑
+        window.scrollTo({
+            top: section.offsetTop - 80,
+            behavior: 'smooth'
+        });
+        }
+    }
+    
+    // 滚动后自动关闭移动端菜单
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) {
+        mobileMenu.classList.add('hidden');
+    }
+    mobileMenuOpen = false;
+    }
+
+    /**
+     * ========================================================================
+     * 数据配置部分
+     * ========================================================================
+     */
+    
+    /**
+     * 分类导航映射
+     * 定义每个产品与其所属类别的关系，用于生成左侧导航栏
+     * @type {Object}
+     * @property {string} category - 所属主类别
+     * @property {Object} categoryTitle - 类别标题（中英文）
+     * @property {Array<string>} items - 该类别下的所有产品ID列表
+     */
+    const categoryMap = {
+      'belt_sync': { category: 'megadyne', categoryTitle: { zh: '麦高迪皮带', en: 'Megadyne Belts' }, items: ['belt_sync', 'belt_triangle', 'belt_pvc', 'belt_pu'] },
+      'belt_triangle': { category: 'megadyne', categoryTitle: { zh: '麦高迪皮带', en: 'Megadyne Belts' }, items: ['belt_sync', 'belt_triangle', 'belt_pvc', 'belt_pu'] },
+      'belt_pvc': { category: 'megadyne', categoryTitle: { zh: '麦高迪皮带', en: 'Megadyne Belts' }, items: ['belt_sync', 'belt_triangle', 'belt_pvc', 'belt_pu'] },
+      'belt_pu': { category: 'megadyne', categoryTitle: { zh: '麦高迪皮带', en: 'Megadyne Belts' }, items: ['belt_sync', 'belt_triangle', 'belt_pvc', 'belt_pu'] },
+      'dongli_dr': { category: 'dongli', categoryTitle: { zh: '东力减速机系列', en: 'Dongli Series' }, items: ['dongli_dr', 'dongli_dk', 'dongli_df', 'dongli_ds'] },
+      'dongli_dk': { category: 'dongli', categoryTitle: { zh: '东力减速机系列', en: 'Dongli Series' }, items: ['dongli_dr', 'dongli_dk', 'dongli_df', 'dongli_ds'] },
+      'dongli_df': { category: 'dongli', categoryTitle: { zh: '东力减速机系列', en: 'Dongli Series' }, items: ['dongli_dr', 'dongli_dk', 'dongli_df', 'dongli_ds'] },
+      'dongli_ds': { category: 'dongli', categoryTitle: { zh: '东力减速机系列', en: 'Dongli Series' }, items: ['dongli_dr', 'dongli_dk', 'dongli_df', 'dongli_ds'] }
+    };
+
+    /**
+     * 主类别到第一个子产品的映射
+     * 当用户点击主类别产品时，自动跳转到该类别的第一个子产品详情页
+     * @type {Object}
+     * @example { 'megadyne': 'belt_sync' } - 点击麦高迪皮带时，自动跳转到同步带
+     */
+    const categoryToFirstProduct = {
+      'megadyne': 'belt_sync',      // 麦高迪皮带 -> 同步带
+      'dongli': 'dongli_dr'         // 东力减速机 -> DR系列
+    };
+
+    /**
+     * 产品数据对象
+     * 存储所有产品的详细信息，包括标题、描述、图片、特点、技术参数等
+     * @type {Object}
+     * @structure {
+     *   productId: {
+     *     title: { zh: '中文标题', en: 'English Title' },
+     *     subtitle: { zh: '中文副标题', en: 'English Subtitle' },
+     *     image: '图片路径',
+     *     category: '所属类别',
+     *     description: { zh: '中文描述', en: 'English Description' },
+     *     features: { zh: ['特点1', '特点2'], en: ['Feature 1', 'Feature 2'] },
+     *     specs: [{ param: { zh: '参数名', en: 'Parameter' }, value: '值', unit: '单位' }]
+     *   }
+     * }
+     */
+    const productData = {
+      belt_sync: {
+        title: {
+          zh: '同步带',
+          en: 'Synchronous Belt'
+        },
+        subtitle: {
+          zh: '高精度同步传动带',
+          en: 'High Precision Synchronous Belt'
+        },
+        image: 'https://i.postimg.cc/0NbctjzY/belt001.jpg',
+        category: 'megadyne',
+        description: {
+          zh: '通过带齿与带轮精准啮合实现无滑动传动，涵盖橡胶与聚氨酯两大材质，含单面 / 双面齿、梯形 / 抛物线等多种齿形，适配工业传动、线性定位、食品加工等多元场景。',
+          en: 'Realize non-slip transmission through precise meshing of belt teeth and pulleys, covering rubber and polyurethane materials, with single/double-sided teeth and trapezoidal/parabolic profiles, suitable for industrial transmission, linear positioning, and food processing applications.'
+        },
+        features: {
+          zh: [
+            '传动精度高，效率达 98%-99.5%，定位误差小',
+            '低噪免维护，耐老化、耐高低温（-25℃~+110℃）',
+            '高承载长寿命，强化层设计降低伸长率，适配极端工况'
+          ],
+          en: [
+            'High transmission precision, efficiency up to 98%-99.5%, small positioning error',
+            'Low noise, maintenance-free, aging resistant, extreme temperature tolerance (-25℃~+110℃)',
+            'High load capacity and long lifespan, reinforced layer design reduces elongation for extreme conditions'
+          ]
+        }
+      },
+      belt_triangle: {
+        title: {
+          zh: '三角带',
+          en: 'V-Belt'
+        },
+        subtitle: {
+          zh: '工业传动三角带',
+          en: 'Industrial Transmission V-Belt'
+        },
+        image: 'https://i.postimg.cc/4x8WbVND/belt002.png',
+        category: 'megadyne',
+        description: {
+          zh: '横截面呈 V 型的摩擦传动带，含包布型、切边齿形、联组等多种类型，覆盖普通型、窄 V 型等全规格，广泛应用于通用机械、重型设备、家电等动力传递场景。',
+          en: 'Friction transmission belt with V-shaped cross-section, including wrapped, notched and multiple configurations, covering standard and narrow V-belt types, widely used in general machinery, heavy equipment, and household appliances.'
+        },
+        features: {
+          zh: [
+            '结构简单易安装，对中心距适应性强',
+            '过载打滑保护，避免设备损坏',
+            '传动平稳吸振，耐油耐热，维护成本低',
+            '功率覆盖广（1kW-400kW），转速适配 100-8000RPM'
+          ],
+          en: [
+            'Simple structure, easy installation, strong center distance adaptability',
+            'Overload slip protection prevents equipment damage',
+            'Smooth transmission, vibration dampening, oil and heat resistant, low maintenance cost',
+            'Wide power range (1kW-400kW), speed adaptation 100-8000RPM'
+          ]
+        }
+      },
+      belt_pvc: {
+        title: {
+          zh: 'PVC输送带',
+          en: 'PVC Conveyor Belt'
+        },
+        subtitle: {
+          zh: '环保PVC输送带',
+          en: 'Eco-friendly PVC Conveyor Belt'
+        },
+        image: 'https://i.postimg.cc/zGDdg05Q/belt03.png',
+        category: 'megadyne',
+        description: {
+          zh: '以聚氯乙烯为基材的实心编织输送带，分普通型与食品级，表面可定制防滑、导条设计，专为物料连续输送打造，适配陶瓷、物流、食品加工等行业。',
+          en: 'Solid woven conveyor belt with PVC base material, available in standard and food-grade versions, customizable surface with anti-slip and guide features, designed for continuous material transport in ceramics, logistics, food processing industries.'
+        },
+        features: {
+          zh: [
+            '耐油污、耐弱酸碱，潮湿粉尘环境适应性强',
+            '表面光滑易清洁，无污渍残留',
+            '结构稳定抗拉伸，输送受力均匀',
+            '性价比高，支持宽度、长度灵活定制'
+          ],
+          en: [
+            'Oil and weak acid/alkali resistant, strong moisture and dust environment adaptability',
+            'Smooth surface, easy to clean, no stain residue',
+            'Stable structure, tear resistant, uniform conveying force',
+            'High cost-effectiveness, flexible width and length customization'
+          ]
+        }
+      },
+      belt_pu: {
+        title: {
+          zh: 'PU皮带',
+          en: 'PU Belt'
+        },
+        subtitle: {
+          zh: '高性能PU传动带',
+          en: 'High-Performance PU Belt'
+        },
+        image: 'https://i.postimg.cc/5t6nPyXL/belt004.png',
+        category: 'megadyne',
+        description: {
+          zh: '热塑性聚氨酯基材，含同步带、平皮带等类型，内置钢丝 / 聚酯帘线强化，含食品级系列（符合 EU 1935/2004 标准），适配轻型传动、食品输送、真空输送等场景。',
+          en: 'Thermoplastic polyurethane base material, including synchronous belts and flat belts, with steel wire/polyester cord reinforcement, food-grade series available (compliant with EU 1935/2004), suitable for light transmission, food transport, vacuum conveying applications.'
+        },
+        features: {
+          zh: [
+            '高耐磨抗剪切，寿命较普通橡胶带提升 2-3 倍',
+            '耐老化、耐化学腐蚀，适配恶劣工业环境',
+            '静音运行，无需润滑，维护便捷',
+            '定制性强，可做背胶、挡块、钻孔处理'
+          ],
+          en: [
+            'High wear and shear resistance, lifespan 2-3 times longer than standard rubber belts',
+            'Aging and chemical corrosion resistant for harsh industrial environments',
+            'Quiet operation, no lubrication needed, convenient maintenance',
+            'Highly customizable, available with backing adhesive, blocks, and perforation'
+          ]
+        }
+      },
+      megadyne: {
+        title: {
+          zh: '麦高迪皮带',
+          en: 'Megadyne Belts'
+        },
+        subtitle: {
+          zh: '工业传动同步带',
+          en: 'Industrial Transmission Synchronous Belts'
+        },
+        image: 'https://i.postimg.cc/hvbrJ755/maigaodibelt01.png',
+        description: {
+          zh: '高品质工业传送带，适用于各种机械设备。',
+          en: 'High-quality industrial conveyor belts, suitable for various machinery.'
+        },
+        features: {
+          zh: [
+            '高品质橡胶材料，耐用性强',
+            '精确的齿形设计，传动效率高',
+            '抗油、抗热、抗老化性能优异',
+            '适用于各种工业传动系统'
+          ],
+          en: [
+            'High-quality rubber materials with strong durability',
+            'Precise tooth profile design, high transmission efficiency',
+            'Excellent oil, heat and aging resistance',
+            'Suitable for various industrial transmission systems'
+          ]
+        },
+        specs: [
+          { 
+            param: { zh: '材质', en: 'Material' }, 
+            value: { zh: '氯丁橡胶', en: 'Chloroprene Rubber' }, 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '抗拉强度', en: 'Tensile Strength' }, 
+            value: '≥ 1000', 
+            unit: 'N/mm' 
+          },
+          { 
+            param: { zh: '工作温度', en: 'Operating Temperature' }, 
+            value: '-30 ~ +120', 
+            unit: '°C' 
+          },
+          { 
+            param: { zh: '带宽范围', en: 'Belt Width Range' }, 
+            value: '10 ~ 200', 
+            unit: 'mm' 
+          },
+          { 
+            param: { zh: '齿数范围', en: 'Tooth Count Range' }, 
+            value: '10 ~ 300', 
+            unit: { zh: '齿', en: 'teeth' } 
+          }
+        ]
+      },
+      dongli: {
+        title: {
+          zh: '东力减速机',
+          en: 'Dongli Gear Reducers'
+        },
+        subtitle: {
+          zh: '高效齿轮减速电机',
+          en: 'High Efficiency Gear Reduction Motors'
+        },
+        image: 'https://i.postimg.cc/MGvdsHnb/dongli-head.jpg',
+        description: {
+          zh: '高效可靠的减速电机，为您的设备提供稳定动力。',
+          en: 'High-efficiency and reliable gear reduction motors, providing stable power for your equipment.'
+        },
+        features: {
+          zh: [
+            '高精度齿轮加工，传动平稳',
+            '低噪音设计，运行安静',
+            '高强度铸铁箱体，散热性好',
+            '多种安装方式，适应性强'
+          ],
+          en: [
+            'High-precision gear processing for smooth transmission',
+            'Low noise design for quiet operation',
+            'High-strength cast iron housing with good heat dissipation',
+            'Multiple installation methods with strong adaptability'
+          ]
+        },
+        specs: [
+          { 
+            param: { zh: '减速比', en: 'Reduction Ratio' }, 
+            value: '3 ~ 1800', 
+            unit: ':' 
+          },
+          { 
+            param: { zh: '输出扭矩', en: 'Output Torque' }, 
+            value: '5 ~ 5000', 
+            unit: 'N.m' 
+          },
+          { 
+            param: { zh: '电机功率', en: 'Motor Power' }, 
+            value: '0.12 ~ 30', 
+            unit: 'kW' 
+          },
+          { 
+            param: { zh: '效率', en: 'Efficiency' }, 
+            value: '≥ 95', 
+            unit: '%' 
+          },
+          { 
+            param: { zh: '防护等级', en: 'Protection Level' }, 
+            value: 'IP54', 
+            unit: '-' 
+          }
+        ]
+      },
+      //陶机配件类映射
+      /*taoji_polish: {
+        title: {
+          zh: '抛磨抛光类配件',
+          en: 'Polishing Accessories'
+        },
+        subtitle: {
+          zh: '陶瓷抛磨抛光配件',
+          en: 'Ceramic Polishing Accessories'
+        },
+        image: 'https://i.postimg.cc/gn5N1G5J/taoji01.png',
+        category: 'taojipeijian',
+        description: {
+          zh: '涵盖抛光磨头、磨头座、主轴、同步带轮、砂轮夹盘、吸水辊棒等核心部件，适配陶瓷抛光、磨边、倒角、打包等工序，兼容主流陶机设备。',
+          en: 'Covers polishing heads, grinding head seats, spindles, synchronous belt wheels, grinding wheel flanges, water-absorbing rollers and other core components, adapted for ceramic polishing, grinding edges, chamfering, and packaging processes, compatible with mainstream ceramic machinery.'
+        },
+        features: {
+          zh: [
+            '高精度适配，耐磨耐用，提升加工效率',
+            '全系列覆盖，满足不同规格设备需求',
+            '严格质检，稳定性强，降低更换频次'
+          ],
+          en: [
+            'High precision fit, wear-resistant and durable, improves processing efficiency',
+            'Complete series coverage, meets the needs of different specifications',
+            'Strict quality inspection, strong stability, reduces replacement frequency'
+          ]
+        }
+      },
+      taoji_glaze: {
+        title: {
+          zh: '釉线设备类配件',
+          en: 'Glaze Line Equipment Accessories'
+        },
+        subtitle: {
+          zh: '釉线设备配件',
+          en: 'Glaze Line Equipment Parts'
+        },
+        image: 'https://i.postimg.cc/RN8X2v8M/taoji02.png',
+        category: 'taojipeijian',
+        description: {
+          zh: '包含喷釉机、淋釉器、储坯机、转弯机、搅拌抽釉桶、釉线塑料件等，适配淋釉、喷釉、印花等釉线全流程，支持智能化生产需求。',
+          en: 'Includes spraying machines, glaze applicators, blank storage machines, turning machines, stirring and glaze extraction buckets, glaze line plastic parts, etc., adapted for the entire glaze line process including glaze sprinkling, spraying, printing, and supports intelligent production requirements.'
+        },
+        features: {
+          zh: [
+            '防腐蚀设计，适配釉料环境',
+            '精准控釉，保障陶瓷表面质感',
+            '易安装维护，适配自动化生产线'
+          ],
+          en: [
+            'Corrosion-resistant design, suitable for glaze environment',
+            'Precise glaze control, ensures ceramic surface quality',
+            'Easy installation and maintenance, suitable for automated production lines'
+          ]
+        }
+      },
+      taoji_kiln: {
+        title: {
+          zh: '窑炉系统类配件',
+          en: 'Kiln System Accessories'
+        },
+        subtitle: {
+          zh: '窑炉系统配件',
+          en: 'Kiln System Parts'
+        },
+        image: 'https://i.postimg.cc/bsM34qMk/taoji03.png',
+        category: 'taojipeijian',
+        description: {
+          zh: '涵盖陶瓷辊棒、耐火材料（纤维板 / 毯、耐火砖）、温控仪表、烧嘴、电磁阀、风机叶轮等，适配窑炉加热、保温、传动全系统。',
+          en: 'Covers ceramic rollers, refractory materials (fiber boards/mats, refractory bricks), temperature control instruments, burners, solenoid valves, fan impellers, etc., adapted for kiln heating, insulation, and transmission systems.'
+        },
+        features: {
+          zh: [
+            '耐高温抗热震，适配窑炉极端工况',
+            '保温性强，节能降耗',
+            '精准控温，保障烧制品质'
+          ],
+          en: [
+            'High-temperature resistant and thermal shock resistant, suitable for extreme kiln conditions',
+            'Strong insulation, energy-efficient and reduces consumption',
+            'Precise temperature control, ensures firing quality'
+          ]
+        }
+      },
+      taojipeijian: {
+        title: {
+          zh: '陶机配件',
+          en: 'Ceramic Machine Parts'
+        },
+        subtitle: {
+          zh: '高品质陶机配件',
+          en: 'High Quality Ceramic Machine Parts'
+        },
+        image: 'https://i.postimg.cc/k2bfmk3D/taojipeijian01.png',
+        description: {
+          zh: '陶机配件是专为陶瓷生产设备设计的高品质配件系列。采用优质材料制造，具有耐磨、耐高温、精度高等特点，能有效提高设备运行效率和使用寿命，广泛应用于陶瓷、砖瓦、耐火材料等生产领域。',
+          en: 'Ceramic machine parts are a high-quality parts series designed specifically for ceramic production equipment. Made from premium materials with wear resistance, high-temperature resistance, and high precision characteristics, they can effectively improve equipment operating efficiency and lifespan, widely used in ceramic, brick, and refractory material production fields.'
+        },
+        features: {
+          zh: [
+            '耐磨耐高温，使用寿命长',
+            '精度高，装配质量好',
+            '材质优选，性能稳定',
+            '适配多种陶机设备'
+          ],
+          en: [
+            'Wear and high-temperature resistant with long service life',
+            'High precision and excellent assembly quality',
+            'Premium materials with stable performance',
+            'Compatible with various ceramic machine equipment'
+          ]
+        }
+      },*/
+      dongli_dr: {
+        title: {
+          zh: 'DR系列斜齿轮减速电机',
+          en: 'DR Series Helical Gear Reduction Motor'
+        },
+        subtitle: {
+          zh: '斜齿轮减速电机',
+          en: 'Helical Gear Reduction Motor'
+        },
+        image: 'https://i.postimg.cc/zBhprQS1/jiansuji01.jpg',
+        description: {
+          zh: 'DR系列斜齿轮减速电机采用先进的斜齿轮设计，具有传动平稳、噪音低、效率高等特点。产品广泛应用于食品机械、包装机械、纺织机械等各种工业领域。',
+          en: 'The DR series helical gear reduction motor adopts an advanced helical gear design with smooth transmission, low noise, and high efficiency. Products are widely used in food machinery, packaging machinery, textile machinery and other industrial fields.'
+        },
+        features: {
+          zh: [
+            '斜齿轮设计，传动平稳低噪',
+            '高效率传动，节能环保',
+            '坚固耐用，运行可靠',
+            '多种安装方式可选'
+          ],
+          en: [
+            'Helical gear design for smooth and quiet transmission',
+            'High-efficiency transmission, energy-saving and environmental protection',
+            'Sturdy and durable, reliable operation',
+            'Multiple installation methods available'
+          ]
+        },
+        specs: [
+          { 
+            param: { zh: '机座号', en: 'Frame Size' }, 
+            value: '17-167', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '额定扭矩', en: 'Rated Torque' }, 
+            value: '90-18000', 
+            unit: 'N.m' 
+          },
+          { 
+            param: { zh: '输入功率', en: 'Input Power' }, 
+            value: '0.12-160', 
+            unit: 'kW' 
+          },
+          { 
+            param: { zh: '速比范围', en: 'Speed Ratio Range' }, 
+            value: '1.3-217.91', 
+            unit: ':' 
+          },
+          { 
+            param: { zh: '安装类型', en: 'Installation Type' }, 
+            value: 'M1-M6', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '装配形式', en: 'Assembly Form' }, 
+            value: { zh: '地脚安装、法兰安装', en: 'Foot Mount, Flange Mount' }, 
+            unit: '-' 
+          }
+        ]
+      },
+      dongli_dk: {
+        title: {
+          zh: 'DK系列斜齿轮-锥齿轮减速电机',
+          en: 'DK Series Helical-Bevel Gear Reduction Motor'
+        },
+        subtitle: {
+          zh: '斜齿轮-锥齿轮减速电机',
+          en: 'Helical-Bevel Gear Reduction Motor'
+        },
+        image: 'https://i.postimg.cc/MTBtSLbj/jiansuji02.jpg',
+        description: {
+          zh: 'DK系列采用斜齿轮与锥齿轮的组合，提供更加灵活的安装方案和更高的传动效率。该系列产品性能稳定，可靠性高，是自动化生产线的理想选择。',
+          en: 'The DK series combines helical gears and bevel gears to provide more flexible installation solutions and higher transmission efficiency. The product series has stable performance and high reliability, making it an ideal choice for automation production lines.'
+        },
+        features: {
+          zh: [
+            '斜齿轮-锥齿轮组合',
+            '更灵活的轴向安装',
+            '传动效率高达96%以上',
+            '广泛应用于自动化生产线'
+          ],
+          en: [
+            'Helical-bevel gear combination',
+            'More flexible axial installation',
+            'Transmission efficiency over 96%',
+            'Widely used in automation production lines'
+          ]
+        },
+        specs: [
+          { 
+            param: { zh: '机座号', en: 'Frame Size' }, 
+            value: '37-187', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '额定扭矩', en: 'Rated Torque' }, 
+            value: '150-50000', 
+            unit: 'N.m' 
+          },
+          { 
+            param: { zh: '输入功率', en: 'Input Power' }, 
+            value: '0.12-200', 
+            unit: 'kW' 
+          },
+          { 
+            param: { zh: '速比范围', en: 'Speed Ratio Range' }, 
+            value: '5.93-175.09', 
+            unit: ':' 
+          },
+          { 
+            param: { zh: '安装类型', en: 'Installation Type' }, 
+            value: 'M1-M6', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '装配形式', en: 'Assembly Form' }, 
+            value: { zh: '地脚安装、法兰安装、轴挂式扭力臂安装', en: 'Foot Mount, Flange Mount, Shaft Arm Mount' }, 
+            unit: '-' 
+          }
+        ]
+      },
+      dongli_df: {
+        title: {
+          zh: 'DF系列平行轴斜齿轮减速电机',
+          en: 'DF Series Parallel Shaft Helical Gear Reduction Motor'
+        },
+        subtitle: {
+          zh: '平行轴斜齿轮减速电机',
+          en: 'Parallel Shaft Helical Gear Reduction Motor'
+        },
+        image: 'https://i.postimg.cc/L5BTqZbC/jiansuji03.jpg',
+        description: {
+          zh: 'DF系列采用平行轴斜齿轮设计，结构紧凑，安装方便。具有承载能力强、运行稳定、寿命长等优势，适用于各种重载工业应用。',
+          en: 'The DF series adopts a parallel shaft helical gear design with compact structure and easy installation. It has strong load capacity, stable operation, long service life, and is suitable for various heavy-duty industrial applications.'
+        },
+        features: {
+          zh: [
+            '平行轴设计，结构紧凑',
+            '安装方便，维护简单',
+            '适应重载工业应用',
+            '运行寿命长'
+          ],
+          en: [
+            'Parallel shaft design with compact structure',
+            'Easy installation and simple maintenance',
+            'Suitable for heavy-duty industrial applications',
+            'Long operating life'
+          ]
+        },
+        specs: [
+          { 
+            param: { zh: '机座号', en: 'Frame Size' }, 
+            value: '27-157', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '额定扭矩', en: 'Rated Torque' }, 
+            value: '90-18000', 
+            unit: 'N.m' 
+          },
+          { 
+            param: { zh: '输入功率', en: 'Input Power' }, 
+            value: '0.12-200', 
+            unit: 'kW' 
+          },
+          { 
+            param: { zh: '速比范围', en: 'Speed Ratio Range' }, 
+            value: '4.18-261.27', 
+            unit: ':' 
+          },
+          { 
+            param: { zh: '安装类型', en: 'Installation Type' }, 
+            value: 'M1-M6', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '装配形式', en: 'Assembly Form' }, 
+            value: { zh: '地脚安装、法兰安装、轴挂式扭力臂安装', en: 'Foot Mount, Flange Mount, Shaft Arm Mount' }, 
+            unit: '-' 
+          }
+        ]
+      },
+      dongli_ds: {
+        title: {
+          zh: 'DS系列斜齿轮-蜗轮蜗杆减速电机',
+          en: 'DS Series Helical-Worm Gear Reduction Motor'
+        },
+        subtitle: {
+          zh: '斜齿轮-蜗轮蜗杆减速电机',
+          en: 'Helical-Worm Gear Reduction Motor'
+        },
+        image: 'https://i.postimg.cc/6qL07Gmb/jiansuji04.jpg',
+        description: {
+          zh: 'DS系列将斜齿轮与蜗轮蜗杆相结合，提供最大的减速比和最小的体积。具有自锁特性，安全可靠，广泛应用于提升、传送等应用场景。',
+          en: 'The DS series combines helical gears with worm gears, providing maximum reduction ratio and minimum volume. It has self-locking characteristics, safety and reliability, and is widely used in lifting, conveying and other application scenarios.'
+        },
+        features: {
+          zh: [
+            '斜齿轮-蜗轮蜗杆组合',
+            '大减速比，体积小',
+            '具有自锁功能，运行安全',
+            '适用于垂直安装场景'
+          ],
+          en: [
+            'Helical-worm gear combination',
+            'Large reduction ratio, compact size',
+            'Self-locking function for safe operation',
+            'Suitable for vertical installation'
+          ]
+        },
+        specs: [
+          { 
+            param: { zh: '机座号', en: 'Frame Size' }, 
+            value: '37-97', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '额定扭矩', en: 'Rated Torque' }, 
+            value: '43-4000', 
+            unit: 'N.m' 
+          },
+          { 
+            param: { zh: '输入功率', en: 'Input Power' }, 
+            value: '0.12-22', 
+            unit: 'kW' 
+          },
+          { 
+            param: { zh: '速比范围', en: 'Speed Ratio Range' }, 
+            value: '7-266.67', 
+            unit: ':' 
+          },
+          { 
+            param: { zh: '安装类型', en: 'Installation Type' }, 
+            value: 'M1-M6', 
+            unit: '-' 
+          },
+          { 
+            param: { zh: '装配形式', en: 'Assembly Form' }, 
+            value: { zh: '地脚安装、法兰安装、轴挂式扭力臂安装', en: 'Foot Mount, Flange Mount, Shaft Arm Mount' }, 
+            unit: '-' 
+          }
+        ]
+      }
+    };
+
+    /**
+     * ========================================================================
+     * 状态管理变量
+     * ========================================================================
+     */
+    let darkMode = false;           // 深色模式状态
+    let mobileMenuOpen = false;     // 移动端菜单打开状态
+    let currentProductId = '';      // 当前显示的产品ID
+
+    /**
+     * ========================================================================
+     * 工具函数
+     * ========================================================================
+     */
+    
+    /**
+     * 获取当前语言状态
+     * @returns {string} 'zh' 或 'en' - 当前选中的语言代码
+     */
+    function getCurrentLanguage() {
+      return document.getElementById('language-en').checked ? 'en' : 'zh';
+    }
+
+    /**
+     * ========================================================================
+     * 初始化函数
+     * ========================================================================
+     */
+    
+    /**
+     * 页面初始化函数
+     * 在页面加载完成后执行，设置主题、绑定事件监听器、检查URL参数等
+     */
+    function init() {
+      // 1. 主题初始化 - 从本地存储或系统偏好获取主题设置
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        darkMode = savedTheme === 'dark';
+        document.documentElement.classList.toggle('dark', darkMode);
+      } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        darkMode = true;
+        document.documentElement.classList.add('dark');
+      }
+
+      // 2. 初始化轮播图
+      showSlide(0);
+      resetCarouselAutoplay();
+
+      // 3. 绑定滚动事件监听器
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // 初始检查一次，处理页面刷新后的状态
+      
+      // 4. 检查URL参数 - 支持从外部链接直接打开产品详情页或团队页面
+      if (document.getElementById('app') && !document.getElementById('app').classList.contains('hidden')) {
+        // 延迟一点确保DOM完全加载
+        setTimeout(() => {
+          initFullPageScroll();
+        }, 100);
+      }
+
+      // 5. 绑定滚动事件监听器（用于导航栏样式）
+      window.addEventListener('scroll', handleScroll);
+      
+      // 6. 检查URL参数
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('product');
+      const page = urlParams.get('page');
+      
+      if (productId && productData[productId]) {
+        showProductDetail(productId);
+      } else if (page === 'team') {
+        showTeamPage();
+      }
+
+      // 初始化全屏滚动（仅在首页启用）
+      if (document.getElementById('app') && !document.getElementById('app').classList.contains('hidden')) {
+        initFullPageScroll();
+      }
+    }
+    /**
+     * ========================================================================
+     * 滚动相关函数
+     * ========================================================================
+     */
+    
+    /**
+     * 滚动事件处理函数
+     * 处理导航栏样式变化和元素滚动显示动画
+     */
+    function handleScroll() {
+      // 1. 导航栏样式变化 - 滚动时缩小导航栏
+      const navbar = document.getElementById('navbar');
+      if (navbar) {
+        if (window.scrollY > 50) {
+          // 滚动超过50px时，使用较小的padding和更强的阴影
+          navbar.classList.add('py-2', 'shadow-md');
+          navbar.classList.remove('py-4', 'shadow-sm');
+        } else {
+          // 滚动未超过50px时，使用较大的padding和较弱的阴影
+          navbar.classList.add('py-4', 'shadow-sm');
+          navbar.classList.remove('py-2', 'shadow-md');
+        }
+      }
+      
+      // 2. 滚动显示动画 - 当元素进入视口时添加revealed类
+      const revealElements = document.querySelectorAll('.scroll-reveal');
+      revealElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;  // 触发动画的偏移量
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add('revealed');
+        }
+      });
+    }
+
+    /**
+     * 主题切换函数
+     * 在深色模式和浅色模式之间切换，并保存用户偏好到本地存储
+     */
+    function toggleTheme() {
+      darkMode = !darkMode;
+      document.documentElement.classList.toggle('dark', darkMode);
+      localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+    }
+
+    /**
+     * 移动端菜单切换函数
+     * 在移动设备上显示/隐藏导航菜单
+     */
+    function toggleMobileMenu() {
+      mobileMenuOpen = !mobileMenuOpen;
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (mobileMenu) {
+        mobileMenu.classList.toggle('hidden', !mobileMenuOpen);
+      }
+    }
+
+    /**
+     * 滚动到指定页面区域
+     * @param {string} id - 目标区域的ID（如 'about', 'products' 等）
+     */
+    function scrollToSection(id) {
+      const element = document.getElementById(id);
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop - 80,  // 减去80px以考虑固定导航栏的高度
+          behavior: 'smooth'  // 平滑滚动
+        });
+      }
+      // 滚动后自动关闭移动端菜单
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (mobileMenu) {
+        mobileMenu.classList.add('hidden');
+      }
+      mobileMenuOpen = false;
+    }
+
+    /**
+     * 显示首页
+     */
+    function showHomePage() {
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('product-detail-page').classList.add('hidden');
+    document.getElementById('team-page').classList.add('hidden');
+    
+    // 初始化全屏滚动
+    setTimeout(() => {
+        initFullPageScroll();
+    }, 100);
+    
+    // 更新URL但不刷新页面
+    history.pushState({}, '', window.location.pathname);
+    }
+
+
+    /**
+     * ========================================================================
+     * 团队页面相关函数
+     * ========================================================================
+     */
+
+    /**
+     * 显示团队页面
+     * 隐藏首页和产品详情页，显示专业团队页面
+     */
+    function showTeamPage() {
+      // 销毁全屏滚动
+      destroyFullPageScroll(); 
+
+      document.getElementById('app').classList.add('hidden');
+      document.getElementById('product-detail-page').classList.add('hidden');
+      document.getElementById('team-page').classList.remove('hidden');
+      
+      // 更新浏览器URL（不刷新页面）
+      history.pushState({}, '', `${window.location.pathname}?page=team`);
+      
+      // 滚动到页面顶部
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // 关闭移动端菜单（如果打开）
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (mobileMenu) {
+        mobileMenu.classList.add('hidden');
+      }
+      mobileMenuOpen = false;
+    }
+
+    /**
+     * 显示首页
+     * 隐藏产品详情页和团队页面，显示首页内容
+     */
+    function showHomePage() {
+      document.getElementById('app').classList.remove('hidden');
+      document.getElementById('product-detail-page').classList.add('hidden');
+      document.getElementById('team-page').classList.add('hidden');
+      // 更新URL但不刷新页面
+      history.pushState({}, '', window.location.pathname);
+    }
+
+    /**
+     * ========================================================================
+     * 页面切换函数
+     * ========================================================================
+     */
+    
+    /**
+     * 显示首页
+     * 隐藏产品详情页，显示首页内容，并更新浏览器URL
+     */
+    function showHomePage() {
+      document.getElementById('app').classList.remove('hidden');
+      document.getElementById('product-detail-page').classList.add('hidden');
+      // 更新URL但不刷新页面，保持单页应用体验
+      history.pushState({}, '', window.location.pathname);
+    }
+
+    /**
+     * 显示产品详情页
+     * 根据产品ID加载并显示产品的详细信息，包括标题、描述、特点、技术参数等
+     * @param {string} productId - 产品ID，对应 productData 中的键名
+     */
+    function showProductDetail(productId) {
+      // 销毁全屏滚动
+      destroyFullPageScroll();
+
+      // 1. 验证产品是否存在
+      if (!productData[productId]) {
+        alert('产品不存在');
+        return;
+      }
+
+      // 2. 保存当前产品ID并获取产品数据和当前语言
+      currentProductId = productId;
+      const product = productData[productId];
+      const currentLang = getCurrentLanguage();
+
+      // 3. 如果点击的是主类别，自动重定向到第一个子产品
+      // 例如：点击"麦高迪皮带"会自动跳转到"同步带"
+      if (categoryToFirstProduct[productId]) {
+        return showProductDetail(categoryToFirstProduct[productId]);
+      }
+
+      // 4. 填充产品基本信息（标题、副标题、图片、描述）
+      document.getElementById('product-title').textContent = product.title[currentLang] || product.title.zh;
+      document.getElementById('product-subtitle').textContent = product.subtitle[currentLang] || product.subtitle.zh;
+      document.getElementById('product-image').src = product.image;
+      document.getElementById('product-image').alt = product.title[currentLang] || product.title.zh;
+      document.getElementById('product-description').textContent = product.description[currentLang] || product.description.zh;
+
+      // 5. 处理左侧分类导航栏
+      const categoryNav = document.getElementById('category-nav');
+      const navItemsContainer = document.getElementById('nav-items-container');
+      const navCategoryTitle = document.getElementById('nav-category-title');
+      
+      if (categoryMap[productId]) {
+        // 如果该产品属于某个分类，显示分类导航栏
+        categoryNav.style.display = '';
+        const categoryInfo = categoryMap[productId];
+        const categoryTitle = categoryInfo.categoryTitle[currentLang] || categoryInfo.categoryTitle.zh;
+        navCategoryTitle.textContent = categoryTitle;
+        
+        // 动态生成分类导航项
+        navItemsContainer.innerHTML = '';
+        categoryInfo.items.forEach(itemId => {
+          const itemProduct = productData[itemId];
+          const itemTitle = itemProduct.title[currentLang] || itemProduct.title.zh;
+          const button = document.createElement('button');
+          button.className = 'category-nav-item w-full text-left px-4 py-3 rounded-lg transition-colors text-sm font-medium';
+          button.setAttribute('data-product', itemId);
+          button.textContent = itemTitle;
+          button.onclick = () => showProductDetail(itemId);
+          
+          // 当前产品高亮显示
+          if (itemId === productId) {
+            button.classList.add('bg-blue-600', 'text-white');
+          } else {
+            button.classList.add('hover:bg-blue-100', 'dark:hover:bg-blue-900');
+          }
+          
+          navItemsContainer.appendChild(button);
+        });
+      } else {
+        // 如果产品不属于任何分类，隐藏分类导航栏
+        categoryNav.style.display = 'none';
+      }
+
+      // 6. 填充产品特点列表
+      const featuresContainer = document.getElementById('product-features');
+      featuresContainer.innerHTML = '';
+      const features = product.features[currentLang] || product.features.zh;
+      features.forEach(feature => {
+        const li = document.createElement('li');
+        li.className = 'flex items-start';
+        li.innerHTML = `
+          <i class="fa fa-check text-green-500 mt-1 mr-3 text-lg"></i>
+          <span>${feature}</span>
+        `;
+        featuresContainer.appendChild(li);
+      });
+
+      // 7. 填充技术参数表格（如果产品有技术参数）
+      const specsSection = document.getElementById('specs-section');
+      if (product.specs) {
+        // 显示技术参数区域
+        specsSection.classList.remove('hidden');
+        const specsContainer = document.getElementById('product-specs').querySelector('tbody');
+        specsContainer.innerHTML = '';
+        
+        // 遍历每个技术参数，创建表格行
+        product.specs.forEach(spec => {
+          const tr = document.createElement('tr');
+          tr.className = 'border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors';
+          
+          // 处理多语言参数名
+          const param = typeof spec.param === 'object' ? (spec.param[currentLang] || spec.param.zh) : spec.param;
+          // 处理多语言值
+          const value = typeof spec.value === 'object' ? (spec.value[currentLang] || spec.value.zh) : spec.value;
+          // 处理多语言单位
+          const unit = typeof spec.unit === 'object' ? (spec.unit[currentLang] || spec.unit.zh) : spec.unit;
+          
+          tr.innerHTML = `
+            <td class="p-4 font-medium">${param}</td>
+            <td class="p-4">${value}</td>
+            <td class="p-4">${unit}</td>
+          `;
+          specsContainer.appendChild(tr);
+        });
+      } else {
+        // 如果产品没有技术参数，隐藏技术参数区域（如陶机配件）
+        specsSection.classList.add('hidden');
+      }
+
+      // 8. 填充相关产品推荐：
+      // 修改为只显示两个主类别（皮带和减速机），且不显示当前页面产品
+      const relatedProductsContainer = document.getElementById('related-products').querySelector('.grid');
+      relatedProductsContainer.innerHTML = '';
+
+      // 获取当前产品所属的主类别
+      function getProductMainCategory(productId) {
+        // 如果是皮带类产品
+        if (productId === 'megadyne' || productId.startsWith('belt_')) {
+          return 'megadyne';
+        }
+        // 如果是减速机类产品
+        else if (productId === 'dongli' || productId.startsWith('dongli_')) {
+          return 'dongli';
+        }
+        return null;
+      }
+
+      // 获取当前产品的主类别
+      const currentMainCategory = getProductMainCategory(productId);
+
+      // 定义要显示的两个主类别
+      const mainCategories = [
+        { id: 'megadyne', title: { zh: '皮带系列', en: 'Belt Series' } },
+        { id: 'dongli', title: { zh: '减速机系列', en: 'Gear Reducer Series' } }
+      ];
+
+      // 遍历主类别，只显示与当前产品不同的类别
+      let relatedCount = 0;
+      for (const category of mainCategories) {
+        // 排除当前产品所属的主类别
+        if (category.id !== currentMainCategory) {
+          const relatedProduct = productData[category.id];
+          if (relatedProduct) {
+            const productElement = document.createElement('div');
+            productElement.className = 'bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 cursor-pointer';
+            productElement.onclick = () => showProductDetail(category.id);
+            
+            const relatedTitle = relatedProduct.title[currentLang] || relatedProduct.title.zh;
+            const relatedDescription = relatedProduct.description[currentLang] || relatedProduct.description.zh;
+            const categoryTitle = category.title[currentLang] || category.title.zh;
+            
+            // 根据类别设置不同的颜色样式
+            const isBeltCategory = category.id === 'megadyne';
+            const colorClass = isBeltCategory ? 'blue' : 'indigo';
+            
+            // 创建相关产品卡片
+            productElement.innerHTML = `
+              <div class="relative h-48 overflow-hidden">
+                <img 
+                  src="${relatedProduct.image}" 
+                  alt="${relatedTitle}" 
+                  class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                >
+                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div class="absolute bottom-0 left-0 right-0 p-4">
+                  <div class="inline-flex items-center px-3 py-1 bg-${colorClass}-600 text-white rounded-full text-sm font-medium">
+                    ${categoryTitle}
+                  </div>
+                </div>
+              </div>
+              <div class="p-5">
+                <h4 class="text-xl font-bold mb-2">${relatedTitle}</h4>
+                <p class="mb-4 text-gray-600 dark:text-gray-300 line-clamp-2">${relatedDescription}</p>
+                <div class="flex justify-between items-center">
+                  <button class="text-${colorClass}-600 hover:text-${colorClass}-800 transition-colors">
+                    <span class="lang-zh">查看详情</span>
+                    <span class="lang-en" style="display: none;">View Details</span>
+                    <i class="fa fa-arrow-right ml-1"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+            relatedProductsContainer.appendChild(productElement);
+            relatedCount++;
+            
+            // 只显示1个相关产品（因为只有2个主类别，排除当前产品后只剩1个）
+            if (relatedCount >= 1) break;
+          }
+        }
+      }
+
+      // 如果没有相关产品（理论上不会发生），显示提示信息
+      if (relatedCount === 0) {
+        relatedProductsContainer.innerHTML = `
+          <div class="col-span-3 text-center py-8">
+            <p class="text-gray-500 dark:text-gray-400">
+              <span class="lang-zh">暂无其他相关产品</span>
+              <span class="lang-en" style="display: none;">No other related products</span>
+            </p>
+          </div>
+        `;
+      }
+
+      // 9. 切换页面显示（隐藏首页，显示产品详情页）
+      document.getElementById('app').classList.add('hidden');
+      document.getElementById('product-detail-page').classList.remove('hidden');
+
+      // 10. 更新浏览器URL（不刷新页面）
+      history.pushState({}, '', `${window.location.pathname}?product=${productId}`);
+
+      // 11. 滚动到页面顶部
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+    /**
+     * 更新导航指示器
+     * @param {number} activeIndex - 当前活动区域索引
+     */
+    function updateNavigationIndicator(activeIndex) {
+    const dots = document.querySelectorAll('.section-dot');
+    dots.forEach((dot, index) => {
+        if (index === activeIndex) {
+        dot.classList.add('active');
+        } else {
+        dot.classList.remove('active');
+        }
+    });
+    }
+
+    /**
+     * 从产品详情页返回到首页的联系我们区域
+     * 用于产品详情页中的"联系我们"按钮
+     */
+    function scrollToContactFromProductDetail() {
+      showHomePage();
+      // 延迟100ms确保页面切换完成后再滚动
+      setTimeout(() => {
+        scrollToSection('contact');
+      }, 100);
+    }
+
+    /**
+     * 显示首页并滚动到指定区域
+     * @param {string} sectionId - 目标区域的ID
+     */
+    function showHomePageAndScroll(sectionId) {
+      showHomePage();
+      setTimeout(() => {
+        scrollToSection(sectionId);
+      }, 100);
+    }
+
+    /**
+     * ========================================================================
+     * 事件监听器设置
+     * ========================================================================
+     */
+    
+    /**
+     * 页面加载完成后初始化
+     * 等待DOM完全加载后再执行初始化函数
+     */
+    document.addEventListener('DOMContentLoaded', init);
+
+    /**
+     * 浏览器前进/后退按钮处理
+     * 当用户使用浏览器的前进/后退按钮时，根据URL参数更新页面显示
+     */
+    window.addEventListener('popstate', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('product');
+      const page = urlParams.get('page');
+      
+      if (productId && productData[productId]) {
+        showProductDetail(productId);
+      } else if (page === 'team') {
+        showTeamPage();
+      } else {
+        showHomePage();
+      }
+    });
+  </script>
+  </body>
+</html>
